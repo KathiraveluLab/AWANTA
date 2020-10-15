@@ -1,2 +1,2 @@
 # Sintra
-Self-Adaptive Inter-domain Network Transfers for Radiology. 
+**S**elf-adaptive **I**nter-domain **N**etwork **T**ransfers for **Ra**diology.
