@@ -1,5 +1,4 @@
-# Sintra
-**S**elf-adaptive **I**nter-domain **N**etwork **T**ransfers for **Ra**diology.
+# Sintra: <ins>S</ins>elf-adaptive <ins>I</ins>nter-domain <ins>N</ins>etwork <ins>T</ins>ransfers for <ins>Ra</ins>diology.
 
 Sintra performs inter-domain network transfers for radiology, in a network-aware manner.
 
@@ -21,3 +20,7 @@ Sintra scheduler is a decentralized scheduler in all the Sintra nodes.
 ## viseu
 
 Viseu (Virtual Internet Services at the Edge) is a peer-to-peer overlay that enables users to join the decentralized framework of Sintra.
+
+## niffler
+
+[Niffler](https://github.com/Emory-HITI/Niffler/) is a DICOM networking framework that facilitates efficient transfer of DICOM images on-demand and real-time from PACS to the research environments. Sintra extends Niffler as its data streaming application.
