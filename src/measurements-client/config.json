@@ -1,6 +1,7 @@
 {
-	"Target": "aa.bb.cc.dd",
-	"Probes": 20,
+	"Target": "99.79.30.74",
+	"NoOfProbes": 20,
 	"From": "ca",
-	"Measure": "ping"
+	"Measure": "ping",
+	"Me": "108.72.244.204"
 }

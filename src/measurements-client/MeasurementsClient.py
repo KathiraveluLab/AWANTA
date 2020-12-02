@@ -18,3 +18,11 @@ with open('config.json', 'r') as f:
 
 #Get variables for StoreScp from config.json.
 target = config['Target']
+no_of_probes = config['NoOfProbes']
+from_country = config['From']
+measure = config['Measure']
+
+logging.basicConfig(filename='sintra.log',level=logging.INFO)
+
+
+subprocess.call("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3}".format(measure, target, no_of_probes, from_country), shell=True)
