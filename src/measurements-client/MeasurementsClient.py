@@ -18,3 +18,16 @@ with open('config.json', 'r') as f:
 
 #Get variables for StoreScp from config.json.
 target = config['Target']
+no_of_probes = config['NoOfProbes']
+from_country = config['From']
+measure = config['Measure']
+packets = config['Packets']
+
+logging.basicConfig(filename='sintra.csv', level=logging.INFO, format='%(message)s')
+
+
+ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3} --packets {4}".format(measure, target, no_of_probes, from_country, packets), capture_output=True, shell=True, encoding="utf8")
+
+output_str = ripe.stdout
+
+logging.info(output_str)
