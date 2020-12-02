@@ -1,0 +1,6 @@
+{
+	"Target": "aa.bb.cc.dd",
+	"Probes": 20,
+	"From": "ca",
+	"Measure": "ping"
+}
