@@ -22,7 +22,11 @@ no_of_probes = config['NoOfProbes']
 from_country = config['From']
 measure = config['Measure']
 
-logging.basicConfig(filename='sintra.log',level=logging.INFO)
+logging.basicConfig(filename='sintra.csv', level=logging.INFO, format='%(message)s')
 
 
-subprocess.call("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3}".format(measure, target, no_of_probes, from_country), shell=True)
+ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3}".format(measure, target, no_of_probes, from_country), capture_output=True, shell=True, encoding="utf8")
+
+output_str = ripe.stdout
+
+logging.info(output_str)
