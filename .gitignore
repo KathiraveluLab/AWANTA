@@ -26,4 +26,4 @@ hs_err_pid*
 target/
 .idea/
 **/*.iml
-src/measurements-client/sintra.csv
+modules/measurements-client/sintra.csv

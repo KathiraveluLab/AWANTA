@@ -1,4 +1,4 @@
-# Sintra: <ins>S</ins>elf-adaptive <ins>I</ins>nter-domain <ins>N</ins>etwork <ins>T</ins>ransfers for <ins>Ra</ins>diology.
+# Sintra: <ins>S</ins>elf-adaptive <ins>I</ins>nter-domain <ins>N</ins>etwork <ins>T</ins>ransfers for <ins>Ra</ins>diology
 
 Sintra performs inter-domain network transfers for radiology, in a network-aware manner.
 
