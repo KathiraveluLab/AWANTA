@@ -3,7 +3,7 @@
 Sintra Measurements Client is a python-based toolkit that performs periodic Internet measurements based on RIPE Atlas.
 
 
-# Configuring Sintra Measurements Client
+# Configuring the Sintra Measurements Client
 
 Sintra Measurements Client performs the measurements based on the RIPE Atlas Client.
 
@@ -19,3 +19,9 @@ Find the config.json file in the folder and modify accordingly.
 
 * *Me*: Set your or your probe's IP address. 
 
+
+# Running the Sintra Measurements Client
+
+$ nohup python3 MeasurementsClient.py &
+
+The output is stored in sintra.out.
