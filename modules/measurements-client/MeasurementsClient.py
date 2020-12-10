@@ -25,9 +25,18 @@ packets = config['Packets']
 
 logging.basicConfig(filename='sintra.csv', level=logging.INFO, format='%(message)s')
 
+latency_dict = dict()
 
 ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3} --packets {4}".format(measure, target, no_of_probes, from_country, packets), capture_output=True, shell=True, encoding="utf8")
 
 output_str = ripe.stdout
 
-logging.info(output_str)
+output_line_separated = output_str.split('\n')
+
+
+for line in output_line_separated:
+	if len(line) > 1:
+	    entries = line.split()
+	    latency_dict[entries[5]] = entries[9][4:]
+
+logging.info(latency_dict)
