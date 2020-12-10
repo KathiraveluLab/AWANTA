@@ -37,6 +37,6 @@ output_line_separated = output_str.split('\n')
 for line in output_line_separated:
 	if len(line) > 1:
 	    entries = line.split()
-	    latency_dict[entries[5]] = entries[9]
+	    latency_dict[entries[5]] = entries[9][4:]
 
 logging.info(latency_dict)
