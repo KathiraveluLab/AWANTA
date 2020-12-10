@@ -13,7 +13,7 @@ Find the config.json file in the folder and modify accordingly.
 
 * *NoOfProbes*: Maximum is 500 per iteration. You may leave this value as-is.
 
-* *From*: An array of nations to send data from.
+* *From*: An array of nations to send data from. By default, adds all the nations.
 
 * *Measure*: Measurement. For latency, leave it as the default value, "ping".
 
