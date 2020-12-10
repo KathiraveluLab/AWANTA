@@ -3,7 +3,7 @@
 Sintra performs inter-domain network transfers for radiology, in a network-aware manner.
 
 
-# Sintra Components
+# Sintra Modules
 
 ## measurements-client
 
