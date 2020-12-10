@@ -1,8 +1,8 @@
 {
 	"Target": "99.79.30.74",
 	"NoOfProbes": 500,
-	"From": "us",
+	"From": ["US", "CA"],
 	"Measure": "ping",
-	"Me": "108.72.244.204",
+	"Me": "2600:1700:c710:4f10:1:f7ff:fece:8b21",
 	"Packets": 1
 }
