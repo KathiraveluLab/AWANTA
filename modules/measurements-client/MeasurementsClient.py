@@ -12,7 +12,6 @@ import schedule
 import pickle
 import threading
 
-
 with open('config.json', 'r') as f:
     config = json.load(f)
 
@@ -88,26 +87,28 @@ def measure_latency():
                 for line in output_line_separated:
 	                if len(line) > 1:
 	                    entries = line.split()
-	                    each_dict[entries[5]] = entries[10][6:]
+	                    each_dict[entries[5]] = entries[10][6:-1]
                 
                 whole_dict[country] = each_dict
                 completed_countries.append(country)
             
+                # Write in a human readable file for every country's iteration.
+                with open(current_measurement_file, 'w') as f:
+                    f.write(json.dumps(whole_dict))
+            
             INIT_EXECUTION = False
+
         else:
             # Update the whole_dict incrementally. But not a complete rerun.
             logging.info("Todo: Subsequent Execution is not implemented yet...")
-
-        # Write in a human readable file for every country's iteration.
-        with open(current_measurement_file, 'w') as f:
-            f.write(json.dumps(whole_dict))
 
         iteration += 1
         # Record the total run-time
         logging.info('Total run time: %s %s', (time.time() - t_start)/60, ' minutes!')
         EXTRACTION_RUNNING = False
-    # Print the dictionary to a local file.
-    logging.info(whole_dict)
+
+        # Print the dictionary to a local file.
+        logging.info(whole_dict)
 
 
 # Write the pickle file periodically to track the progress and persist it to the filesystem
