@@ -39,9 +39,9 @@ if not os.path.exists('output'):
 
 # Output in a preferred format.
 if TRIMMED_LOGS:
-    logging.basicConfig(filename='output/sintra.out', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(filename='output/sintra.out', level=logging.INFO, format='%(message)s')
 else:
-	logging.basicConfig(filename='output/sintra.out', level=logging.INFO)
+	logging.basicConfig(filename='output/sintra.out', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 # A dictionary of dictionaries, to store the output of measurements: [country:[src: rtt]]
 whole_dict = dict()
