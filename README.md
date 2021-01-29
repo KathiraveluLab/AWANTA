@@ -5,6 +5,8 @@ Sintra performs inter-domain network transfers for radiology, in a network-aware
 
 # Sintra Modules
 
+Sintra framework is composed of 3 Sintra modules and 2 external open-source projects (with their own repositories).
+
 ## measurements-client
 
 Sintra Measurements Client is based on [RIPE Atlas](https://atlas.ripe.net/) and RIPE Atlas Tools. It assumes existing RIPE Atlas credits acquired by hosting a probe locally or through credits transfer from someone who has accumulated some credits themselves. Then [configure the RIPE Atlas Tools](https://ripe-atlas-tools.readthedocs.io/en/latest/use.html#configuration), which is a Python-based library. The Sintra Measurements Client builds on top of the RIPE Atlas. 
@@ -19,7 +21,7 @@ Sintra scheduler is a decentralized scheduler in all the Sintra nodes.
 
 ## viseu
 
-Viseu (Virtual Internet Services at the Edge) is a peer-to-peer overlay that enables users to join the decentralized framework of Sintra.
+[Viseu](https://github.com/Emory-HITI/Viseu/) (Virtual Internet Services at the Edge) is a peer-to-peer overlay that enables users to join the decentralized framework of Sintra.
 
 ## niffler
 
