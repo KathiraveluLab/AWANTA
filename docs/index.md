@@ -1,3 +1,3 @@
-## Sintra: Self-adaptive Inter-domain Network Transfers for Radiology.
+## Sintra: Adaptive Latency-Aware Network Framework
 
-Sintra is a framework for self-adaptive inter-domain network transfers for radiology. It aims to support sharing of networking and computations across clusters, clouds, and the edge.
+Sintra performs inter-domain network transfers for telehealth, in a network latency-aware manner.
