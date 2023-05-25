@@ -1,6 +1,6 @@
-**A**daptive Software-Defined  **W**ide **A**rea **N**etwork framework for **T**elehealth **A**ccess
+# An SD-WAN framework for telehealth access
 
-AWANTA performs inter-domain network transfers for telehealth, in a network latency-aware manner.
+**AWANTA (A**daptive Software-Defined **W**ide **A**rea **N**etwork framework for **T**elehealth **A**ccess) performs inter-domain network transfers for telehealth, in a network latency-aware manner.
 
 
 # Modules
