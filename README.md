@@ -20,3 +20,10 @@ Propagates the changes in measurements as events to a broker.
 ## controller
 
 The Software-Defined Wide Area Network (SD-WAN) Controller builds on top of Ryu.
+
+
+# Citing AWANTA
+
+If you use AWANTA in your research, please cite the below paper:
+
+* Kathiravelu, Pradeeban, Ananth Reddy Bhimireddy, and Judy Wawira Gichoya. "Network Measurements and Optimizations for Telehealth in Internet's Remote Regions." 2023 Tenth International Conference on Software Defined Systems (SDS). IEEE, 2023.
