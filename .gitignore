@@ -27,4 +27,4 @@ target/
 .idea/
 **/*.iml
 modules/measurements-client/sintra.csv
-awanta-env
+env
