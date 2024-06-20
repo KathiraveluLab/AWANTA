@@ -8,6 +8,7 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 from ryu.lib.packet import ether_types
 from ryu.lib import hub
+from modules.emulator.monitor import Monitor
 
 
 class Controller(app_manager.RyuApp):
@@ -15,7 +16,8 @@ class Controller(app_manager.RyuApp):
 
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
-        self.latency_monitor = hub.spawn()
+        monitor = Monitor()
+        self.latency_monitor = hub.spawn(monitor.fetch_latency_results())
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
