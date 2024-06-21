@@ -1,14 +1,15 @@
 
 from ryu.base import app_manager
 from ryu.controller import ofp_event
-from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
+from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER, DEAD_DISPATCHER
 from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 from ryu.lib.packet import ether_types
 from ryu.lib import hub
-from modules.emulator.monitor import Monitor
+import json
+import os
 
 
 class Controller(app_manager.RyuApp):
@@ -16,8 +17,24 @@ class Controller(app_manager.RyuApp):
 
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
-        monitor = Monitor()
-        self.latency_monitor = hub.spawn(monitor.fetch_latency_results())
+        # monitor = Monitor()
+        self.datapath_ids = {}
+        self.latency_monitor = hub.spawn(self.fetch_latency_results())
+
+    @set_ev_cls(ofp_event.EventOFPStateChange,
+                [MAIN_DISPATCHER, DEAD_DISPATCHER])
+    def _state_change_handler(self, ev):
+        datapath = ev.datapath
+        if ev.state == MAIN_DISPATCHER:
+            if datapath.id not in self.datapath_ids:
+                self.logger.debug('register datapath: %016x', datapath.id)
+                self.datapath_ids[datapath.id] = datapath
+        elif ev.state == DEAD_DISPATCHER:
+            if datapath.id in self.datapath_ids:
+                self.logger.debug('unregister datapath: %016x', datapath.id)
+                del self.datapath_ids[datapath.id]
+
+
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -54,3 +71,11 @@ class Controller(app_manager.RyuApp):
 
         datapath.send_msg(mod)
 
+
+    def fetch_latency_results(self):
+
+        print(os.getcwd())
+        with open("modules/emulator/measurements/s1.json") as s1_m:
+            s1_data = json.load(s1_m)
+
+            print(s1_data)
