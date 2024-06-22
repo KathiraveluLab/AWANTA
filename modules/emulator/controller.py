@@ -1,3 +1,4 @@
+import sys
 
 from ryu.base import app_manager
 from ryu.controller import ofp_event
@@ -20,6 +21,8 @@ class Controller(app_manager.RyuApp):
         # monitor = Monitor()
         self.datapath_ids = {}
         self.latency_monitor = hub.spawn(self.fetch_latency_results())
+        self.rtt_matrix = [[[-sys.maxsize] for _ in range(3)] for _ in range(3)]
+        self.link_to_index = {"s1":0, "s12": 1, "s2": 2}
 
     @set_ev_cls(ofp_event.EventOFPStateChange,
                 [MAIN_DISPATCHER, DEAD_DISPATCHER])
@@ -77,5 +80,20 @@ class Controller(app_manager.RyuApp):
         print(os.getcwd())
         with open("modules/emulator/measurements/s1.json") as s1_m:
             s1_data = json.load(s1_m)
-
             print(s1_data)
+
+        with open("modules/emulator/measurements/s2.json") as s2_m:
+            s2_data = json.load(s2_m)
+
+        with open("modules/emulator/measurements/s12.json") as s12_m:
+            s12_data = json.load(s12_m)
+
+        self._update_rtt_matrix(s1_data, s2_data, s12_data)
+        self._set_optimal_route()
+
+
+    def _update_rtt_matrix(self, s1_data, s2_data, s12_data):
+        pass
+
+    def _set_optimal_route(self):
+        pass
