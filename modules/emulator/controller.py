@@ -81,17 +81,17 @@ class Controller(app_manager.RyuApp):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
 
-        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
+        instruction = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
                                              actions)]
         if buffer_id:
-            mod = parser.OFPFlowMod(datapath=datapath, buffer_id=buffer_id,
+            mod_message = parser.OFPFlowMod(datapath=datapath, buffer_id=buffer_id,
                                     priority=priority, match=match,
-                                    instructions=inst)
+                                    instructions=instruction)
         else:
-            mod = parser.OFPFlowMod(datapath=datapath, priority=priority,
-                                    match=match, instructions=inst)
+            mod_message = parser.OFPFlowMod(datapath=datapath, priority=priority,
+                                    match=match, instructions=instruction)
 
-        datapath.send_msg(mod)
+        datapath.send_msg(mod_message)
 
 
     def set_ip_flow(self, datapath, source_dpid, destination_dpid):
@@ -118,13 +118,6 @@ class Controller(app_manager.RyuApp):
             self._update_rtt_matrix(dpid, ld)
 
         self.measurement_count += 1
-
-
-
-
-        # self._update_rtt_matrix(s1_data, s2_data, s12_data)
-        # self._set_optimal_route()
-
         hub.sleep(30)
 
 
