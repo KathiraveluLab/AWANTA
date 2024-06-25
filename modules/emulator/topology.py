@@ -1,3 +1,8 @@
+from logging import info
+
+from mininet.cli import CLI
+from mininet.net import Mininet
+from mininet.node import RemoteController, CPULimitedHost
 from mininet.topo import Topo
 
 class NetworkTopology(Topo):
@@ -22,4 +27,32 @@ class NetworkTopology(Topo):
         self.addLink(alaska_switch, newyork_switch)
         self.addLink(newyork_switch, newyork_host)
 
-topos = { 'network_topology': (lambda: NetworkTopology())}
+# topos = { 'network_topology': (lambda: NetworkTopology())}
+
+
+def installStaticFlows(net):
+    print(net.links)
+    for sw in net.switches:
+        print(sw.ports, "here")
+        info('Adding flows to %s...' % sw.name)
+        sw.dpctl('add-flow', 'in_port=1,actions=output:2')
+        # sw.dpctl('add-flow', 'in_port=2,actions=output=1')
+        info(sw.dpctl('dump-flows'))
+
+
+def run():
+    c = RemoteController('c', '0.0.0.0', 6633)
+    net = Mininet(topo=NetworkTopology(), host=CPULimitedHost, controller=None)
+    net.addController(c)
+    net.start()
+
+    installStaticFlows(net)
+    CLI(net)
+    net.stop()
+
+
+
+if __name__ == "__main__":
+    run()
+
+
