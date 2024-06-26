@@ -36,6 +36,7 @@ def installStaticFlows(net):
         print(sw.ports, "here")
         info('Adding flows to %s...' % sw.name)
         sw.dpctl('add-flow', 'in_port=1,actions=output:2')
+        # sw.dpctl('add-flow', 'in_port=1,actions=output:3')
         # sw.dpctl('add-flow', 'in_port=2,actions=output=1')
         info(sw.dpctl('dump-flows'))
 
