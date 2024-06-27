@@ -10,9 +10,12 @@ class NetworkTopology(Topo):
         # Initialize topology
         Topo.__init__( self )
 
+        self.src_ip = '10.0.0.1'
+        self.dst_ip = '10.0.0.2'
+
         # Add hosts
-        alaska_host = self.addHost('h1')
-        newyork_host = self.addHost('h2')
+        alaska_host = self.addHost('h1', ip=self.src_ip)
+        newyork_host = self.addHost('h2', ip=self.dst_ip)
 
         # Add Switches
         alaska_switch = self.addSwitch('s1')
@@ -30,24 +33,26 @@ class NetworkTopology(Topo):
 # topos = { 'network_topology': (lambda: NetworkTopology())}
 
 
-def installStaticFlows(net):
+def installStaticFlows(net, topo):
     print(net.links)
     for sw in net.switches:
-        print(sw.ports, "here")
+        print(type(sw.ports.keys()[0]), "here")
         info('Adding flows to %s...' % sw.name)
-        sw.dpctl('add-flow', 'in_port=1,actions=output:2')
+        sw.dpctl('add-flow', "ip,nw_src={},nw_dst={},actions=output:2".format(topo.src_ip, topo.dst_ip))
         # sw.dpctl('add-flow', 'in_port=1,actions=output:3')
         # sw.dpctl('add-flow', 'in_port=2,actions=output=1')
+        # sw.
         info(sw.dpctl('dump-flows'))
 
 
 def run():
     c = RemoteController('c', '0.0.0.0', 6633)
-    net = Mininet(topo=NetworkTopology(), host=CPULimitedHost, controller=None)
+    topo = NetworkTopology()
+    net = Mininet(topo=topo, host=CPULimitedHost, controller=None)
     net.addController(c)
     net.start()
 
-    installStaticFlows(net)
+    installStaticFlows(net, topo)
     CLI(net)
     net.stop()
 
