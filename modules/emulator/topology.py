@@ -34,15 +34,25 @@ class NetworkTopology(Topo):
 
 
 def installStaticFlows(net, topo):
-    print(net.links)
-    for sw in net.switches:
-        print(type(sw.ports.keys()[0]), "here")
-        info('Adding flows to %s...' % sw.name)
-        sw.dpctl('add-flow', "ip,nw_src={},nw_dst={},actions=output:2".format(topo.src_ip, topo.dst_ip))
+    # print(net.links[0].intf1.node.name, net.links[0].intf2.ip)
+    for l in net.links:
+    # for sw in net.switches:
+        src_intf = l.intf1
+        dst_intf = l.intf2
+        src_node = l.intf1.node
+        dst_node = l.intf2.node
+
+        if src_intf.ip != None:
+            continue
+
+        # print(type(sw.ports.keys()[0]), "here")
+        out_port = src_node.ports[src_intf]
+        info('Adding flows to %s...' % src_node.name)
+        src_node.dpctl('add-flow', "ip,nw_src={},nw_dst={},actions=output:{}".format(topo.src_ip, topo.dst_ip, out_port))
         # sw.dpctl('add-flow', 'in_port=1,actions=output:3')
         # sw.dpctl('add-flow', 'in_port=2,actions=output=1')
         # sw.
-        info(sw.dpctl('dump-flows'))
+        info(src_node.dpctl('dump-flows'))
 
 
 def run():
