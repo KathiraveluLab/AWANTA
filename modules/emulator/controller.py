@@ -16,6 +16,8 @@ import os
 from ryu.topology import event
 from ryu.topology.api import get_switch, get_link, get_all_link
 
+from modules.emulator.monitor import Monitor
+
 
 class Controller(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
@@ -33,6 +35,7 @@ class Controller(app_manager.RyuApp):
         self.dst_ip = '10.0.0.2'
         self.index_to_link = {v:s for s, v in self.link_to_index.items()}
         self.latency_data = self.process_files()
+        self.monitor = Monitor()
         self.latency_monitor = hub.spawn(self.fetch_latency_results())
 
 
