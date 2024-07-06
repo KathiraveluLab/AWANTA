@@ -32,8 +32,9 @@ class Controller(app_manager.RyuApp):
         self.src_ip = '10.0.0.1'
         self.dst_ip = '10.0.0.2'
         self.index_to_link = {v:s for s, v in self.link_to_index.items()}
+        self.mac_to_port = {}
         self.latency_data = self.process_files()
-        self.latency_monitor = hub.spawn(self.fetch_latency_results())
+        # self.latency_monitor = hub.spawn(self.fetch_latency_results())
 
 
     def process_files(self):
@@ -48,6 +49,28 @@ class Controller(app_manager.RyuApp):
             s12_data = json.load(s12_m)
 
         return {1: s1_data, 12: s12_data, 2: s2_data}
+
+    """
+    The event EventSwitchEnter will trigger the activation of get_topology_data().
+    """
+    @set_ev_cls(event.EventSwitchEnter)
+    def handler_switch_enter(self, ev):
+        # The Function get_switch(self, None) outputs the list of switches.
+        self.topo_raw_switches = copy.copy(get_switch(self, None))
+        # The Function get_link(self, None) outputs the list of links.
+        self.topo_raw_links = copy.copy(get_link(self, None))
+
+        for l in self.topo_raw_links:
+            link = l.to_dict()
+            print(link)
+            src = link['src']
+            dst = link['dst']
+            self.links[src['dpid']] = self.links.get(src['dpid'], {})
+            self.links[src['dpid']][dst['dpid']] = int(src['port_no'])
+
+    """
+    Now you have saved the links and switches of the topo. So you could do all sort of stuf with them. 
+    """
 
     @set_ev_cls(ofp_event.EventOFPStateChange,
                 [MAIN_DISPATCHER, DEAD_DISPATCHER])
@@ -83,6 +106,54 @@ class Controller(app_manager.RyuApp):
                           ev.msg.auxiliary_id, ev.msg.capabilities)
         self.add_flow(datapath, 0, match, actions)
 
+    # @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
+    # def _packet_in_handler(self, ev):
+    #     msg = ev.msg
+    #     datapath = msg.datapath
+    #     ofproto = datapath.ofproto
+    #     parser = datapath.ofproto_parser
+    #
+    #     # get Datapath ID to identify OpenFlow switches.
+    #     dpid = datapath.id
+    #     self.mac_to_port.setdefault(dpid, {})
+    #
+    #     # analyse the received packets using the packet library.
+    #     pkt = packet.Packet(msg.data)
+    #     eth_pkt = pkt.get_protocol(ethernet.ethernet)
+    #     dst = eth_pkt.dst
+    #     src = eth_pkt.src
+    #
+    #     # get the received port number from packet_in message.
+    #     in_port = msg.match['in_port']
+    #
+    #     self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
+    #
+    #     # learn a mac address to avoid FLOOD next time.
+    #     self.mac_to_port[dpid][src] = in_port
+    #
+    #     # if the destination mac address is already learned,
+    #     # decide which port to output the packet, otherwise FLOOD.
+    #     if dst in self.mac_to_port[dpid]:
+    #         out_port = self.mac_to_port[dpid][dst]
+    #     else:
+    #         out_port = ofproto.OFPP_FLOOD
+    #
+    #     # construct action list.
+    #     actions = [parser.OFPActionOutput(out_port)]
+    #
+    #     # install a flow to avoid packet_in next time.
+    #     if out_port != ofproto.OFPP_FLOOD:
+    #         match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
+    #         self.add_flow(datapath, 1, match, actions)
+    #
+    #     # construct packet_out message and send it.
+    #     out = parser.OFPPacketOut(datapath=datapath,
+    #                               buffer_id=ofproto.OFP_NO_BUFFER,
+    #                               in_port=in_port, actions=actions,
+    #                               data=msg.data)
+    #     datapath.send_msg(out)
+
+
     def add_flow(self, datapath, priority, match, actions, buffer_id=None):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
@@ -99,40 +170,8 @@ class Controller(app_manager.RyuApp):
 
         datapath.send_msg(mod_message)
 
-    """
-    The event EventSwitchEnter will trigger the activation of get_topology_data().
-    """
-    @set_ev_cls(event.EventSwitchEnter)
-    def handler_switch_enter(self, ev):
-        # The Function get_switch(self, None) outputs the list of switches.
-        self.topo_raw_switches = copy.copy(get_switch(self, None))
-        # The Function get_link(self, None) outputs the list of links.
-        self.topo_raw_links = copy.copy(get_link(self, None))
 
 
-        for l in self.topo_raw_links:
-            link = l.to_dict()
-            src = link['src']
-            dst = link['dst']
-            self.links[src['dpid']] = self.links.get(src['dpid'], {})
-            self.links[src['dpid']][dst['dpid']] = int(src['port_no'])
-
-
-
-        """
-        Now you have saved the links and switches of the topo. So you could do all sort of stuf with them. 
-        """
-
-        # print(" \t" + "Current Links:")
-        # for l in self.topo_raw_links:
-        #     print(l.to_dict())
-        #     print (" \t\t" + str(l))
-        #
-        # print(" \t" + "Current Switches:")
-        # for s in self.topo_raw_switches:
-        #     t = s.to_dict()
-        #     print(int(t['dpid'], 16))
-        #     print (" \t\t" + str(s))
 
     def set_ip_flow(self, source_dpid, destination_dpid):
         print(self.datapath_ids)
@@ -146,7 +185,7 @@ class Controller(app_manager.RyuApp):
                                 ipv4_dst=self.dst_ip
                                 )
         actions = parser.OFPActionOutput(self.links[source_dpid][destination_dpid])
-        self.add_flow(datapath, 1, match, actions)
+        self.add_flow(datapath, 2, match, actions)
 
 
     def fetch_latency_results(self):
@@ -203,7 +242,6 @@ class Controller(app_manager.RyuApp):
         print(dpids)
         for i in range(len(dpids)-1):
             self.set_ip_flow(dpids[i], dpids[i+1])
-            pass
 
 
 
