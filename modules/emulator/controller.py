@@ -16,6 +16,8 @@ import os
 from ryu.topology import event
 from ryu.topology.api import get_switch, get_link, get_all_link
 
+from modules.emulator.monitor import Monitor
+
 
 class Controller(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]

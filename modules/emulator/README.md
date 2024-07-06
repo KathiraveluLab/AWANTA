@@ -25,3 +25,9 @@ To start the ryu controller, install the ryu package from pip or build it from s
 
 ![Network Topology.png](images%2FNetwork%20Topology.png)
 
+
+## Trace Driven Simulation Results
+
+We utilize RIPE ATLAS trace results from the measurement module and integrate it with the SDN Framework. The SDN Framework dynamically switches the path based on these latency metrics, by utilizing open flow modification messages.
+
+
