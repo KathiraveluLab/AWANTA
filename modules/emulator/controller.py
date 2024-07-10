@@ -75,7 +75,7 @@ class Controller(app_manager.RyuApp):
             while True:
                 if len(self.datapaths) != 0:
                     self.routing.fetch_latency_results()
-                hub.sleep(10)
+                hub.sleep(ControllerConstants.FREQUENCY)
         except Exception as e:
             self.logger.error(e)
 

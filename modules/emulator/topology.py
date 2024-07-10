@@ -3,35 +3,39 @@ from mininet.log import setLogLevel
 from mininet.net import Mininet
 from mininet.node import RemoteController, CPULimitedHost
 from mininet.topo import Topo
+from constants import MininetConstants
+
 
 class NetworkTopology(Topo):
-    def __init__( self ):
+    def __init__(self):
         # Initialize topology
-        Topo.__init__( self )
+        Topo.__init__(self)
 
-        self.src_ip = '10.0.0.1'
-        self.dst_ip = '10.0.0.2'
+        self.src_ip = MininetConstants.SRC_IP
+        self.dst_ip = MininetConstants.DST_IP
+
+        self.switch_map = dict()
 
         # Add hosts
-        alaska_host = self.addHost('h1', ip=self.src_ip)
-        newyork_host = self.addHost('h2', ip=self.dst_ip)
+        source_host = self.addHost(MininetConstants.SRC_HOST, ip=self.src_ip)
+        destination_host = self.addHost(MininetConstants.DST_HOST, ip=self.dst_ip)
 
         # Add Switches
-        alaska_switch = self.addSwitch('s1')
-        seattle_switch = self.addSwitch('s12')
-        newyork_switch = self.addSwitch('s2')
+        for i in range(MininetConstants.NUM_FULL_MESH):
+            self.switch_map[MininetConstants.SWITCHES + i] = self.addSwitch(MininetConstants.SWITCHES + i)
 
+        # Add Full Mesh Links
+        for i in range(MininetConstants.NUM_FULL_MESH):
+            for j in range(i + 1, MininetConstants.NUM_FULL_MESH):
+                self.addLink(MininetConstants.SWITCHES + i, MininetConstants.SWITCHES + j)
 
-        # Add links
-        self.addLink(alaska_host, alaska_switch)
-        self.addLink(alaska_switch, seattle_switch)
-        self.addLink(seattle_switch, newyork_switch)
-        self.addLink(alaska_switch, newyork_switch)
-        self.addLink(newyork_host, newyork_switch)
+        # Host Links
+        self.addLink(source_host, self.switch_map[MininetConstants.SRC_SWITCH])
+        self.addLink(destination_host, self.switch_map[MininetConstants.DST_SWITCH])
 
 
 def run():
-    c = RemoteController('c', '0.0.0.0', 6633)
+    c = RemoteController(MininetConstants.CONTROLLER_LABEL, MininetConstants.CONTROLLER_IP, MininetConstants.CONTROLLER_PORT)
     topo = NetworkTopology()
     net = Mininet(topo=topo, host=CPULimitedHost, controller=None)
     net.addController(c)
@@ -41,9 +45,6 @@ def run():
     net.stop()
 
 
-
 if __name__ == "__main__":
-    setLogLevel('info')
+    setLogLevel(MininetConstants.INFO)
     run()
-
-
