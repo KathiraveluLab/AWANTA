@@ -1,3 +1,4 @@
+from __future__ import annotations
 from ryu.base import app_manager
 from ryu.controller import ofp_event
 from ryu.controller.handler import MAIN_DISPATCHER, DEAD_DISPATCHER, CONFIG_DISPATCHER
@@ -8,6 +9,7 @@ from ryu.topology import event
 from network_manager import NetworkManager
 from routing import Routing
 from trace_manager import TraceManager
+from constants import *
 
 
 class Controller(app_manager.RyuApp):
@@ -15,7 +17,7 @@ class Controller(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
         self.network_manager = NetworkManager()
-        self.trace_manager = TraceManager("")
+        self.trace_manager = TraceManager(TraceManagerConstants.PATH)
         self.latency_data = self.trace_manager.process_files()
         self.datapaths = {}
         self.routing = Routing(self.network_manager, self.latency_data, self.datapaths)
@@ -52,12 +54,30 @@ class Controller(app_manager.RyuApp):
                           ev.msg.auxiliary_id, ev.msg.capabilities)
         self.add_flow(datapath, 0, match, actions)
 
+    def add_flow(self, datapath, priority, match, actions, buffer_id=None):
+        ofproto = datapath.ofproto
+        parser = datapath.ofproto_parser
+
+        instruction = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
+                                             actions)]
+        if buffer_id:
+            mod_message = parser.OFPFlowMod(datapath=datapath, buffer_id=buffer_id,
+                                    priority=priority, match=match,
+                                    instructions=instruction)
+        else:
+            mod_message = parser.OFPFlowMod(datapath=datapath, priority=priority,
+                                    match=match, instructions=instruction)
+
+        datapath.send_msg(mod_message)
 
     def _monitor(self):
-        while True:
-            if len(self.datapaths) != 0:
-                self.routing.fetch_latency_results()
-            hub.sleep(10)
+        try:
+            while True:
+                if len(self.datapaths) != 0:
+                    self.routing.fetch_latency_results()
+                hub.sleep(10)
+        except Exception as e:
+            self.logger.error(e)
 
     @set_ev_cls(event.EventSwitchEnter)
     def handler_switch_enter(self, ev):

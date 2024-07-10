@@ -18,7 +18,6 @@ class NetworkManager:
 
     def initialize_links(self, app):
         self.topo_raw_switches = copy.copy(get_switch(app, None))
-        # The Function get_link(self, None) outputs the list of links.
         self.topo_raw_links = copy.copy(get_link(app, None))
 
         for l in self.topo_raw_links:

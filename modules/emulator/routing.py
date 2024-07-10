@@ -20,7 +20,6 @@ class Routing:
             self._update_rtt_matrix(dpid, ld)
         self.measurement_count += 1
 
-
         print(self.rtt_matrix)
         dpids = self.get_optimal_route(1, 2)
         self.set_optimal_route(dpids)
