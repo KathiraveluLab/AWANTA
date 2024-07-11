@@ -23,8 +23,6 @@ class NetworkManager:
         self.topo_raw_switches = copy.copy(get_switch(app, None))
         self.topo_raw_links = copy.copy(get_link(app, None))
 
-        logging.info("Initializing Links")
-
         for l in self.topo_raw_links:
             link = l.to_dict()
             src = link[NetworkManagerConstants.SRC]

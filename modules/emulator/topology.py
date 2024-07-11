@@ -22,12 +22,12 @@ class NetworkTopology(Topo):
 
         # Add Switches
         for i in range(MininetConstants.NUM_FULL_MESH):
-            self.switch_map[MininetConstants.SWITCHES + i] = self.addSwitch(MininetConstants.SWITCHES + i)
+            self.switch_map[MininetConstants.SWITCHES + str(i+1)] = self.addSwitch(MininetConstants.SWITCHES + str(i+1))
 
         # Add Full Mesh Links
         for i in range(MininetConstants.NUM_FULL_MESH):
             for j in range(i + 1, MininetConstants.NUM_FULL_MESH):
-                self.addLink(MininetConstants.SWITCHES + i, MininetConstants.SWITCHES + j)
+                self.addLink(self.switch_map[MininetConstants.SWITCHES + str(i+1)], self.switch_map[MininetConstants.SWITCHES + str(j+1)])
 
         # Host Links
         self.addLink(source_host, self.switch_map[MininetConstants.SRC_SWITCH])

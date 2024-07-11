@@ -1,6 +1,8 @@
+import logging
 import sys
 from constants import MininetConstants, ControllerConstants
-import logging
+from utils import preprocess_ids
+
 
 class Routing:
 
@@ -11,25 +13,23 @@ class Routing:
         self.rtt_matrix = [[sys.maxsize for _ in range(MininetConstants.NUM_FULL_MESH)] for _ in
                            range(MininetConstants.NUM_FULL_MESH)]
         self.measurement_count = 0
-        self.link_to_index = {1: 0, 12: 1, 2: 2}
+        self.link_to_index = {k: k - 1 for k in range(1, MininetConstants.NUM_FULL_MESH + 1)}
         self.index_to_link = {v: s for s, v in self.link_to_index.items()}
+        self.logger = logging.getLogger(ControllerConstants.LOGGER_NAME)
 
     def fetch_latency_results(self):
 
-        print("Fetching latency results")
         for dpid, latency_data in self.latency_data.items():
             ld = latency_data[self.measurement_count]
-            self._update_rtt_matrix(dpid, ld)
+            self._update_rtt_matrix(int(dpid), ld)
+        self.logger.info("Processing Measurement %s", self.measurement_count + 1)
         self.measurement_count += 1
 
-        print(self.rtt_matrix)
         dpids = self.get_optimal_route(MininetConstants.SRC_SWITCH_LABEL, MininetConstants.DST_SWITCH_LABEL)
         self.set_optimal_route(dpids)
 
     def _update_rtt_matrix(self, source_dpid, latency_data):
-
         source_index = self.link_to_index[source_dpid]
-
         for dpid, latency in latency_data.items():
             target_index = self.link_to_index[int(dpid)]
             self.rtt_matrix[source_index][target_index] = latency
@@ -89,7 +89,7 @@ class Routing:
 
         dpids.append(MininetConstants.DST_HOST)
         dpids = [MininetConstants.SRC_HOST] + dpids
-        logging.info(dpids)
+        self.logger.info("Routing Path: %s", preprocess_ids(dpids.copy()))
 
         for i in range(len(dpids)):
             if i + 1 > len(dpids) - 1:

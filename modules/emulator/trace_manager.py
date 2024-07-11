@@ -1,8 +1,8 @@
 import json
-import os
-from constants import TraceManagerConstants
-from utils import file_splitter
 import logging
+import os
+
+from utils import file_splitter
 
 
 class TraceManager:
