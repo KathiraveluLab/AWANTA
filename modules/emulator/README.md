@@ -39,9 +39,8 @@ Download python 3.7+ binaries from here
 https://www.python.org/downloads/
 ```
 
-## High Level Design
-
-![High Level Design.png](images%2FHigh%20Level%20Design.png)
+## Trace Driven Emulator (high level design)
+![Trace Driven Emulation.png](images%2FTrace%20Driven%20Emulation.png)
 
 ## Running the Mininet Emulator
 
