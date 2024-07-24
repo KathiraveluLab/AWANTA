@@ -39,6 +39,10 @@ Download python 3.7+ binaries from here
 https://www.python.org/downloads/
 ```
 
+## High Level Design
+
+![High Level Design.png](images%2FHigh%20Level%20Design.png)
+
 ## Running the Mininet Emulator
 
 To run with the given topology, please run this command.

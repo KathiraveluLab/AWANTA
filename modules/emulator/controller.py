@@ -77,8 +77,8 @@ class Controller(app_manager.RyuApp):
                     self.routing.fetch_latency_results()
                 hub.sleep(ControllerConstants.FREQUENCY)
         except Exception as e:
-            raise e
             self.logger.error("Stopping periodic routing")
+            raise e
 
     @set_ev_cls(event.EventSwitchEnter)
     def handler_switch_enter(self, ev):
