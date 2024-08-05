@@ -17,7 +17,7 @@ class Controller(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
         self.network_manager = NetworkManager()
-        self.trace_manager = TraceManager(TraceManagerConstants.PATH)
+        self.trace_manager = TraceManager(TraceManagerConstants.PATH) # load all data
         self.latency_data = self.trace_manager.process_files()
         self.datapaths = {}
         self.routing = Routing(self.network_manager, self.latency_data, self.datapaths)
@@ -74,6 +74,7 @@ class Controller(app_manager.RyuApp):
         try:
             while True:
                 if len(self.datapaths) != 0:
+                    # Create an iterator - iterate through each measurement
                     self.routing.fetch_latency_results()
                 hub.sleep(ControllerConstants.FREQUENCY)
         except Exception as e:
