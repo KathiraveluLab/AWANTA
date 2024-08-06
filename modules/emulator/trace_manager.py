@@ -24,3 +24,7 @@ class TraceManager:
             logging.error("Error in accessing measurement files")
 
         return self.latency_data
+
+    # Gets the next measurement
+    def get_next(self):
+        pass
