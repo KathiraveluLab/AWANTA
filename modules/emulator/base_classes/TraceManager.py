@@ -10,5 +10,7 @@ class TraceManager(ABC):
     def get_data(self) -> Measurement:
         pass
 
+    # Create an iterator
+
 
 
