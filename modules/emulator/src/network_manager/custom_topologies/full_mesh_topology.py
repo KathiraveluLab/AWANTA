@@ -1,12 +1,8 @@
-from mininet.cli import CLI
-from mininet.log import setLogLevel
-from mininet.net import Mininet
-from mininet.node import RemoteController, CPULimitedHost
 from mininet.topo import Topo
 from modules.emulator.src.utils.constants import MininetConstants
 
 
-class NetworkTopology(Topo):
+class FullMeshTopology(Topo):
     def __init__(self):
         # Initialize topology
         Topo.__init__(self)
@@ -32,19 +28,3 @@ class NetworkTopology(Topo):
         # Host Links
         self.addLink(source_host, self.switch_map[MininetConstants.SRC_SWITCH])
         self.addLink(destination_host, self.switch_map[MininetConstants.DST_SWITCH])
-
-
-def run():
-    c = RemoteController(MininetConstants.CONTROLLER_LABEL, MininetConstants.CONTROLLER_IP, MininetConstants.CONTROLLER_PORT)
-    topo = NetworkTopology()
-    net = Mininet(topo=topo, host=CPULimitedHost, controller=None)
-    net.addController(c)
-    net.start()
-
-    CLI(net)
-    net.stop()
-
-
-if __name__ == "__main__":
-    setLogLevel(MininetConstants.INFO)
-    run()
