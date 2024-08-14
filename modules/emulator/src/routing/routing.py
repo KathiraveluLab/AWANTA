@@ -1,6 +1,6 @@
 import logging
 import sys
-from constants import MininetConstants, ControllerConstants
+from modules.emulator.src.utils.constants import MininetConstants, ControllerConstants
 from utils import preprocess_ids
 
 

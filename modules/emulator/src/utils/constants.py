@@ -8,7 +8,7 @@ class TraceManagerConstants:
     EXTENSION = "json"
 
 class NetworkManagerConstants:
-    SRC = "src"
+    SRC = ".."
     DST = "dst"
     PORT_NO = "port_no"
     DP_ID = "dpid"

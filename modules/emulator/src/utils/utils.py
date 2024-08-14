@@ -1,5 +1,5 @@
-from constants import TraceManagerConstants, MininetConstants
-from exceptions import ExtensionError
+from modules.emulator.src.utils.constants import TraceManagerConstants, MininetConstants
+from modules.emulator.src.exceptions.exceptions import ExtensionError
 
 
 def file_splitter(file_name: str) -> str:

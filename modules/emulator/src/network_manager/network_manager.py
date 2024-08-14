@@ -1,10 +1,10 @@
 import copy
 
 from ryu.topology.api import get_switch, get_link
-from constants import NetworkManagerConstants
-from utils import convert_dpid_key
-from constants import MininetConstants
-import logging
+from modules.emulator.src.utils.constants import NetworkManagerConstants
+from modules.emulator.src.utils.utils import convert_dpid_key
+from modules.emulator.src.utils.constants import MininetConstants
+
 
 class NetworkManager:
 

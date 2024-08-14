@@ -3,7 +3,7 @@ from mininet.log import setLogLevel
 from mininet.net import Mininet
 from mininet.node import RemoteController, CPULimitedHost
 from mininet.topo import Topo
-from constants import MininetConstants
+from modules.emulator.src.utils.constants import MininetConstants
 
 
 class NetworkTopology(Topo):

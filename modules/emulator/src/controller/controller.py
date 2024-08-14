@@ -9,7 +9,7 @@ from ryu.topology import event
 from network_manager import NetworkManager
 from routing import Routing
 from trace_manager import TraceManager
-from constants import *
+from modules.emulator.src.utils.constants import *
 
 
 class Controller(app_manager.RyuApp):
