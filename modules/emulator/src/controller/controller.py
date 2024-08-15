@@ -8,7 +8,6 @@ from ryu.topology import event
 
 from network_manager import NetworkManager
 from routing import Routing
-from trace_manager import TraceManager
 from modules.emulator.src.utils.constants import *
 
 
@@ -17,7 +16,8 @@ class Controller(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
         self.network_manager = NetworkManager()
-        self.trace_manager = TraceManager(TraceManagerConstants.PATH) # load all data
+        print(args)
+        # self.trace_manager = TraceManager(TraceManagerConstants.PATH) # load all data
         self.latency_data = self.trace_manager.process_files()
         self.datapaths = {}
         self.routing = Routing(self.network_manager, self.latency_data, self.datapaths)

@@ -17,7 +17,5 @@ class TraceManager(ABC):
     def get_next_state(self) -> list[Measurement]:
         pass
 
-    # Create an iterator
-
 
 
