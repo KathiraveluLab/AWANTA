@@ -1,13 +1,20 @@
 from abc import ABC, abstractmethod
-from Measurement import Measurement
+from NodeMeasurement import NodeMeasurement
+from modules.emulator.src.trace_manager.Measurement import Measurement
+
 
 class TraceManager(ABC):
 
-    def __init__(self, measurement_data):
-        self.measurement_map: list[Measurement] = measurement_data
+    def __init__(self, path):
+        self.path = path
+        self.measurements: dict[str: NodeMeasurement] = {}
 
     @abstractmethod
-    def get_data(self) -> Measurement:
+    def process_files(self) -> None:
+        pass
+    
+    @abstractmethod
+    def get_next_state(self) -> list[Measurement]:
         pass
 
     # Create an iterator
