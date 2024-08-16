@@ -1,9 +1,4 @@
-import logging
-import sys
-
-from modules.emulator.src.routing.routing import Routing
-from modules.emulator.src.utils.constants import MininetConstants, ControllerConstants
-from utils import preprocess_ids
+from .routing import Routing
 
 
 class LatencyRelaxing(Routing):

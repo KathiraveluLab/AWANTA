@@ -1,5 +1,5 @@
 from mininet.topo import Topo
-from modules.emulator.src.utils.constants import MininetConstants
+from ...utils.constants import MininetConstants
 
 
 class FullMeshTopology(Topo):

@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 import json
 import logging
 import os
 
-from modules.emulator.src.trace_manager.Measurement import Measurement
-from modules.emulator.src.trace_manager.NodeMeasurement import NodeMeasurement
-from modules.emulator.src.trace_manager.TraceManager import TraceManager
-from modules.emulator.src.utils.utils import file_splitter
+from .Measurement import Measurement
+from .NodeMeasurement import NodeMeasurement
+from .TraceManager import TraceManager
+from ..utils.utils import file_splitter
 
 """
 This extractor requires the latency data in the following format:
@@ -48,14 +50,18 @@ class CustomLatencyExtractor(TraceManager):
                     data = json.load(measurement)
                 measurements: list[Measurement] = []
                 for m in data:
-                    measurements.append(Measurement(key, m))
+                    measurements.append(Measurement(int(key), m))
                 node_measurement = NodeMeasurement(key, measurements)
                 self.measurements[key] = iter(node_measurement)
         except IOError as e:
             logging.error("Error in accessing measurement files")
 
-    def get_next_state(self) -> list[Measurement]:
+    def get_next_state(self) -> list[Measurement] | None:
         measurements: list[Measurement] = []
-        for dpid, node_measurements in self.measurements.items():
-            measurements.append(next(node_measurements.measurement_list))
-        return measurements
+        try:
+            for dpid, node_measurements in self.measurements.items():
+                measurements.append(next(node_measurements.measurement_iterator))
+            return measurements
+
+        except StopIteration:
+            return None

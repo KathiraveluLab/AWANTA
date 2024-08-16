@@ -3,12 +3,12 @@ import pathlib
 package_root = pathlib.Path(__file__).parent.parent.parent.resolve()
 
 class TraceManagerConstants:
-    PATH = str(package_root) + "/modules/emulator/measurements/"
+    PATH = str(package_root) + "/src/measurements/"
     DELIMITER = "."
     EXTENSION = "json"
 
 class NetworkManagerConstants:
-    SRC = ".."
+    SRC = "src"
     DST = "dst"
     PORT_NO = "port_no"
     DP_ID = "dpid"

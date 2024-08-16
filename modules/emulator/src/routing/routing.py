@@ -2,14 +2,14 @@ import logging
 import sys
 from abc import ABC, abstractmethod
 
-from modules.emulator.src.trace_manager.Measurement import Measurement
-from modules.emulator.src.utils.constants import ControllerConstants, MininetConstants
-from modules.emulator.src.utils.utils import preprocess_ids
+from ..trace_manager.Measurement import Measurement
+from ..utils.constants import ControllerConstants, MininetConstants
+from ..utils.utils import preprocess_ids
 
 
 class Routing(ABC):
 
-    def __init__(self, datapaths, network_manager):
+    def __init__(self, network_manager, datapaths):
         self.datapaths = datapaths
         self.network_manager = network_manager
         self.rtt_matrix = [[sys.maxsize for _ in range(MininetConstants.NUM_FULL_MESH)] for _ in

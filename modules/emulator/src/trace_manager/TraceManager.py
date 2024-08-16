@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from NodeMeasurement import NodeMeasurement
-from modules.emulator.src.trace_manager.Measurement import Measurement
+from .NodeMeasurement import NodeMeasurement
+from .Measurement import Measurement
 
 
 class TraceManager(ABC):
