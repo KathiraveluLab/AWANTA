@@ -1,19 +1,19 @@
-==========
+====================
 Trace Manager
-==========
+====================
 
-The trace manager package is responsible for managing diverse trace extraction strategies. Any additional trace extraction strategies are to be implemented in the trace manager package by extending the ``TraceManager`` base class and implementing its functions.
+The trace manager module is responsible for managing diverse trace extraction strategies. Any additional trace extraction strategies are to be implemented in the trace manager package by extending the ``TraceManager`` base class and implementing its functions.
 
 Class Diagram
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 .. image:: TraceManager_ClassDiagram.png
 
 Extraction Strategies
-^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Custom Latency Extractor
------------
+---------------------------
 
 This extractor requires the latency data in the following format:
 
@@ -47,7 +47,7 @@ Here this is format in ``1.json``. Each object in the array signifies the result
 
 
 
-Package
+Module
 ^^^^^^^
 
 .. toctree::

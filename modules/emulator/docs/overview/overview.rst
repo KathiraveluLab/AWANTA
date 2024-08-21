@@ -4,19 +4,19 @@ Overview
 
 
 Getting Started
-==========
+================
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 Prerequisites
-==========
+==============
 
 - Mininet
 - Ryu SDN Controller
 - Python 3.7+
 
 Installation
-==========
+=============
 
 - Mininet
 
@@ -57,7 +57,7 @@ Installation
 
 
 Running the Mininet Emulator
-==========
+==============================
 
 To run with the given topology, please run this command.
 
@@ -67,7 +67,7 @@ To run with the given topology, please run this command.
 
 
 Custom Topology
------------
+----------------------
 
 For example, create a custom mininet topology class under network_manager/custom_topologies and register it under a name of your choice under network_manager/custom_topologies/__init__.py in the topology_map variable.
 
@@ -80,7 +80,7 @@ For an illustration a full_mesh_topology class has been created and is used by d
 Please do note that mininet requires sudo access, so when running these commands, don't forget to use sudo.
 
 Running the Ryu Controller
-==========
+==============================
 
 To start the ryu controller, install the ryu package from pip or build it from source. And run the controller file.
 

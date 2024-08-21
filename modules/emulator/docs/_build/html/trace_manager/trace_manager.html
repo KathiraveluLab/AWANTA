@@ -55,7 +55,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Trace Manager</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#class-diagram">Class Diagram</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extraction-strategies">Extraction Strategies</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#package">Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module">Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../network_manager/network_manager.html">Network Manager</a></li>
@@ -93,7 +93,7 @@
              
   <section id="trace-manager">
 <h1>Trace Manager<a class="headerlink" href="#trace-manager" title="Link to this heading"></a></h1>
-<p>The trace manager package is responsible for managing diverse trace extraction strategies. Any additional trace extraction strategies are to be implemented in the trace manager package by extending the <code class="docutils literal notranslate"><span class="pre">TraceManager</span></code> base class and implementing its functions.</p>
+<p>The trace manager module is responsible for managing diverse trace extraction strategies. Any additional trace extraction strategies are to be implemented in the trace manager package by extending the <code class="docutils literal notranslate"><span class="pre">TraceManager</span></code> base class and implementing its functions.</p>
 <section id="class-diagram">
 <h2>Class Diagram<a class="headerlink" href="#class-diagram" title="Link to this heading"></a></h2>
 <img alt="../_images/TraceManager_ClassDiagram.png" src="../_images/TraceManager_ClassDiagram.png" />
@@ -129,8 +129,8 @@
 <p>Here this is format in <code class="docutils literal notranslate"><span class="pre">1.json</span></code>. Each object in the array signifies the result in a timestep. Also the key, value in each object signify the destination node and the latency value from node <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </section>
 </section>
-<section id="package">
-<h2>Package<a class="headerlink" href="#package" title="Link to this heading"></a></h2>
+<section id="module">
+<h2>Module<a class="headerlink" href="#module" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html">Submodules</a></li>
