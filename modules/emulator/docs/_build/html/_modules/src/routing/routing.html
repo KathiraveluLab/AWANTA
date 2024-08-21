@@ -41,9 +41,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -83,8 +84,17 @@
 <div class="viewcode-block" id="Routing">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing">[docs]</a>
 <span class="k">class</span> <span class="nc">Routing</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a base class for routing strategies. Each newly implemented routing strategy should inherit from this class. Each new routing strategy should implement :func: `update_rtt_matrix` and :func: `get_optimal_route`</span>
+
+<span class="sd">    :param network_manager: The network manager object :class: `NetworkManager`</span>
+<span class="sd">    :type network_manager: class:`NetworkManager`</span>
+<span class="sd">    :param datapaths: The datapaths map that stores datapath id of the corresponding virtual mininet switch</span>
+<span class="sd">    :type datapaths: dict[str: ]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_manager</span><span class="p">,</span> <span class="n">datapaths</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datapaths</span> <span class="o">=</span> <span class="n">datapaths</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network_manager</span> <span class="o">=</span> <span class="n">network_manager</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rtt_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MininetConstants</span><span class="o">.</span><span class="n">NUM_FULL_MESH</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span>
@@ -96,13 +106,30 @@
 <div class="viewcode-block" id="Routing.update_rtt_matrix">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.update_rtt_matrix">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">update_rtt_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">update_rtt_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes a list of :class: `Measurement` objects and updates the RTT matrix</span>
+
+<span class="sd">        :param latency_results: A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix</span>
+<span class="sd">        :type latency_results: list[Measurement]</span>
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Routing.fetch_latency_results">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.fetch_latency_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">fetch_latency_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">fetch_latency_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes a list of :class: `Measurement` objects and performs the following functions</span>
+<span class="sd">            1. update rtt matrix</span>
+<span class="sd">            2. calculate the optimal route from source label to destination label</span>
+<span class="sd">            3. set the optimal route in the underlying mininet topology using SDN controller</span>
+
+<span class="sd">        :param latency_results: A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix</span>
+<span class="sd">        :type latency_results: list[Measurement]</span>
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_rtt_matrix</span><span class="p">(</span><span class="n">latency_results</span><span class="p">)</span>
         <span class="n">dp_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_optimal_route</span><span class="p">(</span><span class="n">MininetConstants</span><span class="o">.</span><span class="n">SRC_SWITCH_LABEL</span><span class="p">,</span> <span class="n">MininetConstants</span><span class="o">.</span><span class="n">DST_SWITCH_LABEL</span><span class="p">)</span>
@@ -112,13 +139,33 @@
 <div class="viewcode-block" id="Routing.get_optimal_route">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.get_optimal_route">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">get_optimal_route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_dpid</span><span class="p">,</span> <span class="n">target_dpid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_optimal_route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_dpid</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target_dpid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is an abstract method, that can be overridden by subclasses. Each subclass implements this method and performs its own strategy to calculate the optimal route. This function is utilized to calculate the optimal route between the source and destination nodes, and return the list of nodes that are contained in this optimal route.</span>
+
+<span class="sd">        :param source_dpid: Datapath id of the source node</span>
+<span class="sd">        :type source_dpid: int</span>
+<span class="sd">        :param target_dpid: Datapath id of the target node</span>
+<span class="sd">        :type target_dpid: int</span>
+<span class="sd">        :return: A list of datapath switch names</span>
+<span class="sd">        :rtype: list[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Routing.set_ip_flow">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.set_ip_flow">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_ip_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_ip_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes in a series of 3 nodes, (x, y, z) and forms links in between them, i.e forms x-y link, y-z link, and y-x link, z-y link</span>
+
+<span class="sd">        :param x: node name</span>
+<span class="sd">        :type x: str</span>
+<span class="sd">        :param y: node name</span>
+<span class="sd">        :type y: str</span>
+<span class="sd">        :param z: node name</span>
+<span class="sd">        :type z: str</span>
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">datapath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datapaths</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
         <span class="n">ofproto</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">ofproto</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">ofproto_parser</span>
@@ -131,7 +178,22 @@
 
 <div class="viewcode-block" id="Routing.add_flow">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.add_flow">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapath</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">buffer_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datapath</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">buffer_id</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs flow addition in the mininet topology using SDN controller.</span>
+
+<span class="sd">        :param datapath: Ryu switch datapath object</span>
+<span class="sd">        :type datapath: ryu.controller.controller.Datapath</span>
+<span class="sd">        :param priority: Flow priority</span>
+<span class="sd">        :type priority: int</span>
+<span class="sd">        :param match: Ryu OFPMatch object</span>
+<span class="sd">        :type match: ryu.ofproto.ofproto_v1_2_parser.OFPMatch</span>
+<span class="sd">        :param actions: Ryu SDN actions</span>
+<span class="sd">        :type actions: ryu.ofproto.ofproto_v1_2_parser.OFPActionOutput</span>
+<span class="sd">        :param buffer_id: Packet Buffer Id - ID assigned by datapath (OFP_NO_BUFFER if none)</span>
+<span class="sd">        :type buffer_id: int | None</span>
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ofproto</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">ofproto</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">datapath</span><span class="o">.</span><span class="n">ofproto_parser</span>
 
@@ -150,7 +212,14 @@
 
 <div class="viewcode-block" id="Routing.set_optimal_route">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.routing.Routing.set_optimal_route">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_optimal_route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dpids</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_optimal_route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dpids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes in a list of node names, which form a path from source to destination, and sets up the optimal route in the mininet topology using the SDN controller.</span>
+
+<span class="sd">        :param dpids: A list of node names</span>
+<span class="sd">        :type dpids: list[str]</span>
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">dpids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MininetConstants</span><span class="o">.</span><span class="n">DST_HOST</span><span class="p">)</span>
         <span class="n">dpids</span> <span class="o">=</span> <span class="p">[</span><span class="n">MininetConstants</span><span class="o">.</span><span class="n">SRC_HOST</span><span class="p">]</span> <span class="o">+</span> <span class="n">dpids</span>

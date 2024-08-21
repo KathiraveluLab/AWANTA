@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>src.routing package &mdash; AWANTA SDN Emulator 0.0.1 documentation</title>
+  <title>Submodules &mdash; AWANTA SDN Emulator 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="src.trace_manager package" href="src.trace_manager.html" />
-    <link rel="prev" title="src.network_manager.custom_topologies package" href="src.network_manager.custom_topologies.html" /> 
+    <link rel="next" title="Trace Manager" href="trace_manager/trace_manager.html" />
+    <link rel="prev" title="Routing" href="routing/routing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,24 +44,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="src.exceptions.html">src.exceptions package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.metrics.html">src.metrics package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.network_manager.html">src.network_manager package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">src.routing package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.trace_manager.html">src.trace_manager package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.utils.html">src.utils package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -78,9 +64,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
-          <li class="breadcrumb-item"><a href="src.html">src package</a></li>
-      <li class="breadcrumb-item active">src.routing package</li>
+          <li class="breadcrumb-item"><a href="design.html">Modules</a></li>
+          <li class="breadcrumb-item"><a href="routing/routing.html">Routing</a></li>
+      <li class="breadcrumb-item active">Submodules</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/src.routing.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -90,80 +76,212 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="src-routing-package">
-<h1>src.routing package<a class="headerlink" href="#src-routing-package" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+  <section id="submodules">
+<h1>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h1>
 </section>
 <section id="module-src.routing.latency_relaxing">
-<span id="src-routing-latency-relaxing-module"></span><h2>src.routing.latency_relaxing module<a class="headerlink" href="#module-src.routing.latency_relaxing" title="Link to this heading"></a></h2>
+<span id="src-routing-latency-relaxing-module"></span><h1>src.routing.latency_relaxing module<a class="headerlink" href="#module-src.routing.latency_relaxing" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.routing.latency_relaxing.LatencyRelaxing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.routing.latency_relaxing.</span></span><span class="sig-name descname"><span class="pre">LatencyRelaxing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datapaths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/latency_relaxing.html#LatencyRelaxing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.latency_relaxing.LatencyRelaxing" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.routing.routing.Routing" title="src.routing.routing.Routing"><code class="xref py py-class docutils literal notranslate"><span class="pre">Routing</span></code></a></p>
+<p>This is a latency relaxing algorithm, that chooses the best next one-hop node as the routing strategy. For example, let’s say we have three nodes s1, s2, s3.
+Let s1 be the source node and s3 be the destination node. If latency of s1-s2 + latency of s2-s3 &lt; latency of s1-s3, then the optimal route from s1-s3 is changed as s1-s2-s3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network_manager</strong> (class:<cite>NetworkManager</cite>) – The network manager object :class: <cite>NetworkManager</cite></p></li>
+<li><p><strong>datapaths</strong> (<em>dict</em><em>[</em><em>str: ryu.controller.controller.Datapath</em><em>]</em>) – The datapaths map that stores datapath id of the corresponding virtual mininet switch</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.latency_relaxing.LatencyRelaxing.get_optimal_route">
 <span class="sig-name descname"><span class="pre">get_optimal_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dpid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dpid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/latency_relaxing.html#LatencyRelaxing.get_optimal_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.latency_relaxing.LatencyRelaxing.get_optimal_route" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>This is an abstract method, that can be overridden by subclasses. Each subclass implements this method and performs its own strategy to calculate the optimal route. This function is utilized to calculate the optimal route between the source and destination nodes, and return the list of nodes that are contained in this optimal route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dpid</strong> (<em>int</em>) – Datapath id of the source node</p></li>
+<li><p><strong>target_dpid</strong> (<em>int</em>) – Datapath id of the target node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of datapath switch names</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.latency_relaxing.LatencyRelaxing.update_rtt_matrix">
 <span class="sig-name descname"><span class="pre">update_rtt_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latency_results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/latency_relaxing.html#LatencyRelaxing.update_rtt_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.latency_relaxing.LatencyRelaxing.update_rtt_matrix" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Takes a list of :class: <cite>Measurement</cite> objects and updates the RTT matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latency_results</strong> (<em>list</em><em>[</em><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><em>Measurement</em></a><em>]</em>) – A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-src.routing.routing">
-<span id="src-routing-routing-module"></span><h2>src.routing.routing module<a class="headerlink" href="#module-src.routing.routing" title="Link to this heading"></a></h2>
+<span id="src-routing-routing-module"></span><h1>src.routing.routing module<a class="headerlink" href="#module-src.routing.routing" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.routing.routing.Routing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.routing.routing.</span></span><span class="sig-name descname"><span class="pre">Routing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datapaths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This is a base class for routing strategies. Each newly implemented routing strategy should inherit from this class. Each new routing strategy should implement :func: <cite>update_rtt_matrix</cite> and :func: <cite>get_optimal_route</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network_manager</strong> (class:<cite>NetworkManager</cite>) – The network manager object :class: <cite>NetworkManager</cite></p></li>
+<li><p><strong>datapaths</strong> (<em>dict</em><em>[</em><em>str:</em><em> ]</em>) – The datapaths map that stores datapath id of the corresponding virtual mininet switch</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.add_flow">
-<span class="sig-name descname"><span class="pre">add_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.add_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.add_flow" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">add_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.add_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.add_flow" title="Link to this definition"></a></dt>
+<dd><p>Performs flow addition in the mininet topology using SDN controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>ryu.controller.controller.Datapath</em>) – Ryu switch datapath object</p></li>
+<li><p><strong>priority</strong> (<em>int</em>) – Flow priority</p></li>
+<li><p><strong>match</strong> (<em>ryu.ofproto.ofproto_v1_2_parser.OFPMatch</em>) – Ryu OFPMatch object</p></li>
+<li><p><strong>actions</strong> (<em>ryu.ofproto.ofproto_v1_2_parser.OFPActionOutput</em>) – Ryu SDN actions</p></li>
+<li><p><strong>buffer_id</strong> (<em>int</em><em> | </em><em>None</em>) – Packet Buffer Id - ID assigned by datapath (OFP_NO_BUFFER if none)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.fetch_latency_results">
-<span class="sig-name descname"><span class="pre">fetch_latency_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latency_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.fetch_latency_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.fetch_latency_results" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">fetch_latency_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latency_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.fetch_latency_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.fetch_latency_results" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Takes a list of :class: <cite>Measurement</cite> objects and performs the following functions</dt><dd><ol class="arabic simple">
+<li><p>update rtt matrix</p></li>
+<li><p>calculate the optimal route from source label to destination label</p></li>
+<li><p>set the optimal route in the underlying mininet topology using SDN controller</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latency_results</strong> (<em>list</em><em>[</em><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><em>Measurement</em></a><em>]</em>) – A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.get_optimal_route">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_optimal_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dpid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dpid</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.get_optimal_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.get_optimal_route" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_optimal_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dpid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dpid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.get_optimal_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.get_optimal_route" title="Link to this definition"></a></dt>
+<dd><p>This is an abstract method, that can be overridden by subclasses. Each subclass implements this method and performs its own strategy to calculate the optimal route. This function is utilized to calculate the optimal route between the source and destination nodes, and return the list of nodes that are contained in this optimal route.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dpid</strong> (<em>int</em>) – Datapath id of the source node</p></li>
+<li><p><strong>target_dpid</strong> (<em>int</em>) – Datapath id of the target node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of datapath switch names</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.set_ip_flow">
-<span class="sig-name descname"><span class="pre">set_ip_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.set_ip_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.set_ip_flow" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">set_ip_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.set_ip_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.set_ip_flow" title="Link to this definition"></a></dt>
+<dd><p>Takes in a series of 3 nodes, (x, y, z) and forms links in between them, i.e forms x-y link, y-z link, and y-x link, z-y link</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>str</em>) – node name</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – node name</p></li>
+<li><p><strong>z</strong> (<em>str</em>) – node name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.set_optimal_route">
-<span class="sig-name descname"><span class="pre">set_optimal_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dpids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.set_optimal_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.set_optimal_route" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">set_optimal_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dpids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.set_optimal_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.set_optimal_route" title="Link to this definition"></a></dt>
+<dd><p>Takes in a list of node names, which form a path from source to destination, and sets up the optimal route in the mininet topology using the SDN controller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dpids</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of node names</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.routing.routing.Routing.update_rtt_matrix">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_rtt_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latency_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.update_rtt_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.update_rtt_matrix" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_rtt_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latency_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/routing/routing.html#Routing.update_rtt_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.routing.routing.Routing.update_rtt_matrix" title="Link to this definition"></a></dt>
+<dd><p>Takes a list of :class: <cite>Measurement</cite> objects and updates the RTT matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>latency_results</strong> (<em>list</em><em>[</em><a class="reference internal" href="src.trace_manager.html#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><em>Measurement</em></a><em>]</em>) – A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Does not return anything</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="module-src.routing">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.routing" title="Link to this heading"></a></h2>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="src.network_manager.custom_topologies.html" class="btn btn-neutral float-left" title="src.network_manager.custom_topologies package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="src.trace_manager.html" class="btn btn-neutral float-right" title="src.trace_manager package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="routing/routing.html" class="btn btn-neutral float-left" title="Routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="trace_manager/trace_manager.html" class="btn btn-neutral float-right" title="Trace Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -41,9 +41,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -79,7 +80,11 @@
 <div class="viewcode-block" id="TraceManager">
 <a class="viewcode-back" href="../../../src.trace_manager.html#src.trace_manager.TraceManager.TraceManager">[docs]</a>
 <span class="k">class</span> <span class="nc">TraceManager</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a base class for trace extraction strategies. Each newly implemented trace extraction strategy should inherit from this class. Each new trace extraction strategy should implement :func: `process_files` and :func: `get_next_state`</span>
 
+<span class="sd">    :param path: The path to the trace results folder.</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="n">NodeMeasurement</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -88,6 +93,11 @@
 <a class="viewcode-back" href="../../../src.trace_manager.html#src.trace_manager.TraceManager.TraceManager.process_files">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">process_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes all the trace results in the folder passed into the tracemanager and stores the results into a list of measurement objects.</span>
+
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
     
@@ -95,6 +105,11 @@
 <a class="viewcode-back" href="../../../src.trace_manager.html#src.trace_manager.TraceManager.TraceManager.get_next_state">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">get_next_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Measurement</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides the next set of measurements for all the nodes in the network topology as a list of measurement objects where ith measurement in the list corresponds to the measurement of ith node in the network topology.</span>
+
+<span class="sd">        :return: Does not return anything</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 </div>
 

@@ -18,10 +18,11 @@ The Emulator
 
 
 .. toctree::
-   :hidden:
+   :maxdepth: 3
 
 
 
    overview/overview.rst
-   src.routing.rst
-   Network Manager <src.network_manager.custom_topologies.rst>
+   design.rst
+
+   emulation/emulation.rst

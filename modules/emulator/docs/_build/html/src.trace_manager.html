@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>src.trace_manager package &mdash; AWANTA SDN Emulator 0.0.1 documentation</title>
+  <title>Submodules &mdash; AWANTA SDN Emulator 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="src.utils package" href="src.utils.html" />
-    <link rel="prev" title="src.routing package" href="src.routing.html" /> 
+    <link rel="next" title="Network Manager" href="network_manager/network_manager.html" />
+    <link rel="prev" title="Trace Manager" href="trace_manager/trace_manager.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,24 +44,26 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="src.exceptions.html">src.exceptions package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.metrics.html">src.metrics package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.network_manager.html">src.network_manager package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.routing.html">src.routing package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">src.trace_manager package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.utils.html">src.utils package</a></li>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview/overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="design.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.html#modules-high-level-modules">Modules (High-Level Modules)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#activity-low-level-design">Activity (Low-Level Design)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#periodic-process-loop">Periodic Process Loop</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="design.html#sub-modules">Sub-Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="routing/routing.html">Routing</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="trace_manager/trace_manager.html">Trace Manager</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="trace_manager/trace_manager.html#class-diagram">Class Diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trace_manager/trace_manager.html#extraction-strategies">Extraction Strategies</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="trace_manager/trace_manager.html#package">Package</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network_manager/network_manager.html">Network Manager</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -78,9 +80,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
-          <li class="breadcrumb-item"><a href="src.html">src package</a></li>
-      <li class="breadcrumb-item active">src.trace_manager package</li>
+          <li class="breadcrumb-item"><a href="design.html">Modules</a></li>
+          <li class="breadcrumb-item"><a href="trace_manager/trace_manager.html">Trace Manager</a></li>
+      <li class="breadcrumb-item active">Submodules</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/src.trace_manager.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -90,78 +92,138 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="src-trace-manager-package">
-<h1>src.trace_manager package<a class="headerlink" href="#src-trace-manager-package" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+  <section id="submodules">
+<h1>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h1>
 </section>
 <section id="module-src.trace_manager.Measurement">
-<span id="src-trace-manager-measurement-module"></span><h2>src.trace_manager.Measurement module<a class="headerlink" href="#module-src.trace_manager.Measurement" title="Link to this heading"></a></h2>
+<span id="src-trace-manager-measurement-module"></span><h1>src.trace_manager.Measurement module<a class="headerlink" href="#module-src.trace_manager.Measurement" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.trace_manager.Measurement.Measurement">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.trace_manager.Measurement.</span></span><span class="sig-name descname"><span class="pre">Measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/trace_manager/Measurement.html#Measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.Measurement.Measurement" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores the metric of a single measurement</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<em>int</em>) – The unique node id</p></li>
+<li><p><strong>metric</strong> (<em>any</em>) – This is the measurement metric, this could be latency, or bandwidth, or throughput etc.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-src.trace_manager.NodeMeasurement">
-<span id="src-trace-manager-nodemeasurement-module"></span><h2>src.trace_manager.NodeMeasurement module<a class="headerlink" href="#module-src.trace_manager.NodeMeasurement" title="Link to this heading"></a></h2>
+<span id="src-trace-manager-nodemeasurement-module"></span><h1>src.trace_manager.NodeMeasurement module<a class="headerlink" href="#module-src.trace_manager.NodeMeasurement" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.trace_manager.NodeMeasurement.NodeMeasurement">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.trace_manager.NodeMeasurement.</span></span><span class="sig-name descname"><span class="pre">NodeMeasurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dpid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/trace_manager/NodeMeasurement.html#NodeMeasurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.NodeMeasurement.NodeMeasurement" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores all the measurements of a single node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dpid</strong> (<em>int</em>) – The unique node id</p></li>
+<li><p><strong>measurements</strong> (<em>list</em><em>[</em><a class="reference internal" href="#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><em>Measurement</em></a><em>]</em>) – List of all the measurements of that particular node</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-src.trace_manager.TraceManager">
-<span id="src-trace-manager-tracemanager-module"></span><h2>src.trace_manager.TraceManager module<a class="headerlink" href="#module-src.trace_manager.TraceManager" title="Link to this heading"></a></h2>
+<span id="src-trace-manager-tracemanager-module"></span><h1>src.trace_manager.TraceManager module<a class="headerlink" href="#module-src.trace_manager.TraceManager" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.trace_manager.TraceManager.TraceManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.trace_manager.TraceManager.</span></span><span class="sig-name descname"><span class="pre">TraceManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/trace_manager/TraceManager.html#TraceManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.TraceManager.TraceManager" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This is a base class for trace extraction strategies. Each newly implemented trace extraction strategy should inherit from this class. Each new trace extraction strategy should implement :func: <cite>process_files</cite> and :func: <cite>get_next_state</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the trace results folder.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.trace_manager.TraceManager.TraceManager.get_next_state">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_next_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/src/trace_manager/TraceManager.html#TraceManager.get_next_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.TraceManager.TraceManager.get_next_state" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Provides the next set of measurements for all the nodes in the network topology as a list of measurement objects where ith measurement in the list corresponds to the measurement of ith node in the network topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Does not return anything</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.trace_manager.TraceManager.TraceManager.process_files">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">process_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/trace_manager/TraceManager.html#TraceManager.process_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.TraceManager.TraceManager.process_files" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Processes all the trace results in the folder passed into the tracemanager and stores the results into a list of measurement objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Does not return anything</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-src.trace_manager.custom_latency_extractor">
-<span id="src-trace-manager-custom-latency-extractor-module"></span><h2>src.trace_manager.custom_latency_extractor module<a class="headerlink" href="#module-src.trace_manager.custom_latency_extractor" title="Link to this heading"></a></h2>
+<span id="src-trace-manager-custom-latency-extractor-module"></span><h1>src.trace_manager.custom_latency_extractor module<a class="headerlink" href="#module-src.trace_manager.custom_latency_extractor" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.trace_manager.custom_latency_extractor.CustomLatencyExtractor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.trace_manager.custom_latency_extractor.</span></span><span class="sig-name descname"><span class="pre">CustomLatencyExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/trace_manager/custom_latency_extractor.html#CustomLatencyExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.custom_latency_extractor.CustomLatencyExtractor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.trace_manager.TraceManager.TraceManager" title="src.trace_manager.TraceManager.TraceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">TraceManager</span></code></a></p>
+<p>This is a custom latency extractor that extracts latency from the trace results. Note that the trace results must be ogranized in a certain way to utilize this strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the trace measurements.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.trace_manager.custom_latency_extractor.CustomLatencyExtractor.get_next_state">
 <span class="sig-name descname"><span class="pre">get_next_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#src.trace_manager.Measurement.Measurement" title="src.trace_manager.Measurement.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/src/trace_manager/custom_latency_extractor.html#CustomLatencyExtractor.get_next_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.custom_latency_extractor.CustomLatencyExtractor.get_next_state" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Provides the next set of measurements for all the nodes in the network topology as a list of measurement objects where ith measurement in the list corresponds to the measurement of ith node in the network topology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Does not return anything</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.trace_manager.custom_latency_extractor.CustomLatencyExtractor.process_files">
 <span class="sig-name descname"><span class="pre">process_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/trace_manager/custom_latency_extractor.html#CustomLatencyExtractor.process_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.trace_manager.custom_latency_extractor.CustomLatencyExtractor.process_files" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Processes all the trace results in the folder passed into the tracemanager and stores the results into a list of measurement objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Does not return anything</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="module-src.trace_manager">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.trace_manager" title="Link to this heading"></a></h2>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="src.routing.html" class="btn btn-neutral float-left" title="src.routing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="src.utils.html" class="btn btn-neutral float-right" title="src.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="trace_manager/trace_manager.html" class="btn btn-neutral float-left" title="Trace Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="network_manager/network_manager.html" class="btn btn-neutral float-right" title="Network Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

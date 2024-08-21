@@ -41,9 +41,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -77,6 +78,14 @@
 <div class="viewcode-block" id="LatencyRelaxing">
 <a class="viewcode-back" href="../../../src.routing.html#src.routing.latency_relaxing.LatencyRelaxing">[docs]</a>
 <span class="k">class</span> <span class="nc">LatencyRelaxing</span><span class="p">(</span><span class="n">Routing</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a latency relaxing algorithm, that chooses the best next one-hop node as the routing strategy. For example, let&#39;s say we have three nodes s1, s2, s3.</span>
+<span class="sd">    Let s1 be the source node and s3 be the destination node. If latency of s1-s2 + latency of s2-s3 &lt; latency of s1-s3, then the optimal route from s1-s3 is changed as s1-s2-s3.</span>
+
+<span class="sd">    :param network_manager: The network manager object :class: `NetworkManager`</span>
+<span class="sd">    :type network_manager: class:`NetworkManager`</span>
+<span class="sd">    :param datapaths: The datapaths map that stores datapath id of the corresponding virtual mininet switch</span>
+<span class="sd">    :type datapaths: dict[str: ryu.controller.controller.Datapath]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_manager</span><span class="p">,</span> <span class="n">datapaths</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network_manager</span><span class="p">,</span> <span class="n">datapaths</span><span class="p">)</span>

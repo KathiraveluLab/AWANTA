@@ -1,6 +1,3 @@
-src.trace\_manager package
-==========================
-
 Submodules
 ----------
 
@@ -32,14 +29,6 @@ src.trace\_manager.custom\_latency\_extractor module
 ----------------------------------------------------
 
 .. automodule:: src.trace_manager.custom_latency_extractor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: src.trace_manager
    :members:
    :undoc-members:
    :show-inheritance:

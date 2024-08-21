@@ -41,9 +41,10 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -74,6 +75,13 @@
 <div class="viewcode-block" id="Measurement">
 <a class="viewcode-back" href="../../../src.trace_manager.html#src.trace_manager.Measurement.Measurement">[docs]</a>
 <span></span><span class="k">class</span> <span class="nc">Measurement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores the metric of a single measurement</span>
+
+<span class="sd">    :param src: The unique node id</span>
+<span class="sd">    :type src: int</span>
+<span class="sd">    :param metric: This is the measurement metric, this could be latency, or bandwidth, or throughput etc.</span>
+<span class="sd">    :type metric: any</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">any</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">src</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span></div>

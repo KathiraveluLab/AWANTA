@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="src.routing package" href="../src.routing.html" />
+    <link rel="next" title="Modules" href="../design.html" />
     <link rel="prev" title="Welcome to AWANTA SDN Emulator’s documentation!" href="../index.html" /> 
 </head>
 
@@ -46,12 +46,18 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#activity">Activity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-mininet-emulator">Running the Mininet Emulator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#custom-topology">Custom Topology</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../src.routing.html">src.routing package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../src.network_manager.custom_topologies.html">Network Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-ryu-controller">Running the Ryu Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emulation/emulation.html">Running an Emulation</a></li>
 </ul>
 
         </div>
@@ -80,13 +86,74 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
-<section id="modules">
-<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
-<img alt="../_images/HighLevelDesign.png" src="../_images/HighLevelDesign.png" />
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<p>These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.</p>
 </section>
-<section id="activity">
-<h2>Activity<a class="headerlink" href="#activity" title="Link to this heading"></a></h2>
-<img alt="../_images/LowLevel.png" src="../_images/LowLevel.png" />
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Mininet</p></li>
+<li><p>Ryu SDN Controller</p></li>
+<li><p>Python 3.7+</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Mininet</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Download the Mininet Framework</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Follow this quickstart guide - http://mininet.org/download/
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Python Drivers</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>mininet
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Ryu SDN</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Download Ryu SDN</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Follow this installation setup - https://ryu-sdn.org/
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Python 3.7+</p></li>
+</ul>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Download python 3.7+ binaries from here - https://www.python.org/downloads/
+</pre></div>
+</div>
+</section>
+<section id="running-the-mininet-emulator">
+<h2>Running the Mininet Emulator<a class="headerlink" href="#running-the-mininet-emulator" title="Link to this heading"></a></h2>
+<p>To run with the given topology, please run this command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>python<span class="w"> </span>run_topology.py<span class="w"> </span>-topo<span class="w"> </span>&lt;custom_topology_class&gt;
+</pre></div>
+</div>
+<section id="custom-topology">
+<h3>Custom Topology<a class="headerlink" href="#custom-topology" title="Link to this heading"></a></h3>
+<p>For example, create a custom mininet topology class under network_manager/custom_topologies and register it under a name of your choice under network_manager/custom_topologies/__init__.py in the topology_map variable.</p>
+<p>For an illustration a full_mesh_topology class has been created and is used by default when no topology is given in the command line interface.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>python3<span class="w"> </span>-topo<span class="w"> </span>full_mesh_topology
+</pre></div>
+</div>
+<p>Please do note that mininet requires sudo access, so when running these commands, don’t forget to use sudo.</p>
+</section>
+</section>
+<section id="running-the-ryu-controller">
+<h2>Running the Ryu Controller<a class="headerlink" href="#running-the-ryu-controller" title="Link to this heading"></a></h2>
+<p>To start the ryu controller, install the ryu package from pip or build it from source. And run the controller file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ryu-manager<span class="w"> </span>--observe-links<span class="w"> </span>modules/emulator/controller.py
+</pre></div>
+</div>
+<p>The controller has a configuration file <code class="docutils literal notranslate"><span class="pre">controller.conf</span></code>, which contains the trace_manager to use and the routing strategy to use. These variables are passed through the .conf file because ryu controller does not allow command line arguments in the shell.</p>
 </section>
 </section>
 
@@ -95,7 +162,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to AWANTA SDN Emulator’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../src.routing.html" class="btn btn-neutral float-right" title="src.routing package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../design.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
