@@ -28,35 +28,26 @@ class Routing(ABC):
         self.logger = logging.getLogger(ControllerConstants.LOGGER_NAME)
 
     @abstractmethod
-    def update_rtt_matrix(self, latency_results: list[Measurement]):
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def update_rtt_matrix(self, latency_results: list[Measurement]) -> None:
+        """Takes a list of :class: `Measurement` objects and updates the RTT matrix
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param latency_results: A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix
+        :type latency_results: list[Measurement]
+        :return: Does not return anything
+        :rtype: None
         """
         pass
 
-    def fetch_latency_results(self, latency_results: list[Measurement]):
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def fetch_latency_results(self, latency_results: list[Measurement]) -> None:
+        """Takes a list of :class: `Measurement` objects and performs the following functions
+            1. update rtt matrix
+            2. calculate the optimal route from source label to destination label
+            3. set the optimal route in the underlying mininet topology using SDN controller
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param latency_results: A list of measurement objects that need to be injected into the virtual mininet topology aka rtt matrix
+        :type latency_results: list[Measurement]
+        :return: Does not return anything
+        :rtype: None
         """
 
         self.update_rtt_matrix(latency_results)
@@ -64,35 +55,29 @@ class Routing(ABC):
         self.set_optimal_route(dp_ids)
 
     @abstractmethod
-    def get_optimal_route(self, source_dpid, target_dpid) -> list[str]:
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def get_optimal_route(self, source_dpid: int, target_dpid: int) -> list[str]:
+        """This is an abstract method, that can be overridden by subclasses. Each subclass implements this method and performs its own strategy to calculate the optimal route. This function is utilized to calculate the optimal route between the source and destination nodes, and return the list of nodes that are contained in this optimal route.
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param source_dpid: Datapath id of the source node
+        :type source_dpid: int
+        :param target_dpid: Datapath id of the target node
+        :type target_dpid: int
+        :return: A list of datapath switch names
+        :rtype: list[str]
         """
         pass
 
-    def set_ip_flow(self, x, y, z):
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def set_ip_flow(self, x: str, y: str, z: str) -> None:
+        """Takes in a series of 3 nodes, (x, y, z) and forms links in between them, i.e forms x-y link, y-z link, and y-x link, z-y link
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param x: node name
+        :type x: str
+        :param y: node name
+        :type y: str
+        :param z: node name
+        :type z: str
+        :return: Does not return anything
+        :rtype: None
         """
         datapath = self.datapaths[y]
         ofproto = datapath.ofproto
@@ -103,19 +88,21 @@ class Routing(ABC):
         actions = [parser.OFPActionOutput(outport)]
         self.add_flow(datapath, ControllerConstants.FLOW_PRIORITY, match, actions)
 
-    def add_flow(self, datapath, priority, match, actions, buffer_id=None):
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def add_flow(self, datapath, priority, match, actions, buffer_id=None) -> None:
+        """Performs flow addition in the mininet topology using SDN controller.
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param datapath: Ryu switch datapath object
+        :type datapath: ryu.controller.controller.Datapath
+        :param priority: Flow priority
+        :type priority: int
+        :param match: Ryu OFPMatch object
+        :type match: ryu.ofproto.ofproto_v1_2_parser.OFPMatch
+        :param actions: Ryu SDN actions
+        :type actions: ryu.ofproto.ofproto_v1_2_parser.OFPActionOutput
+        :param buffer_id: Packet Buffer Id - ID assigned by datapath (OFP_NO_BUFFER if none)
+        :type buffer_id: int | None
+        :return: Does not return anything
+        :rtype: None
         """
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
@@ -132,19 +119,13 @@ class Routing(ABC):
 
         datapath.send_msg(mod_message)
 
-    def set_optimal_route(self, dpids):
-        """Returns a list of :class:`bluepy.blte.Service` objects representing
-        the services offered by the device. This will perform Bluetooth service
-        discovery if this has not already been done; otherwise it will return a
-        cached list of services immediately..
+    def set_optimal_route(self, dpids: list[str]) -> None:
+        """Takes in a list of node names, which form a path from source to destination, and sets up the optimal route in the mininet topology using the SDN controller.
 
-        :param uuids: A list of string service UUIDs to be discovered,
-            defaults to None
-        :type uuids: list, optional
-        :return: A list of the discovered :class:`bluepy.blte.Service` objects,
-            which match the provided ``uuids``
-        :rtype: list On Python 3.x, this returns a dictionary view object,
-            not a list
+        :param dpids: A list of node names
+        :type dpids: list[str]
+        :return: Does not return anything
+        :rtype: None
         """
 
         dpids.append(MininetConstants.DST_HOST)

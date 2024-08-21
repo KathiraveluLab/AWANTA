@@ -7,6 +7,8 @@ from ..utils.constants import MininetConstants
 
 
 class NetworkManager:
+    """This class is utilized for creating the virtual topology of mininet nodes, and storing the corresponding links and ports information on startup.
+    """
 
     def __init__(self):
         self.links = dict()
@@ -19,7 +21,14 @@ class NetworkManager:
         self.links[MininetConstants.SRC_SWITCH_LABEL][MininetConstants.SRC_HOST] = (1, 0)
         self.links[MininetConstants.DST_SWITCH_LABEL][MininetConstants.DST_HOST] = (3, 0)
 
-    def initialize_links(self, app):
+    def initialize_links(self, app) -> None:
+        """Takes the ryu controller app as the argument and performs the get_switch and get_link functions to extract the links and ports information on startup.
+
+        :param app: The ryu controller app
+        :type app: ryu.app.App
+        :return: Does not return anything
+        :rtype: None
+        """
         self.topo_raw_switches = copy.copy(get_switch(app, None))
         self.topo_raw_links = copy.copy(get_link(app, None))
 

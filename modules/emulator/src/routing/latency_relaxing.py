@@ -2,6 +2,14 @@ from .routing import Routing
 
 
 class LatencyRelaxing(Routing):
+    """This is a latency relaxing algorithm, that chooses the best next one-hop node as the routing strategy. For example, let's say we have three nodes s1, s2, s3.
+    Let s1 be the source node and s3 be the destination node. If latency of s1-s2 + latency of s2-s3 < latency of s1-s3, then the optimal route from s1-s3 is changed as s1-s2-s3.
+
+    :param network_manager: The network manager object :class: `NetworkManager`
+    :type network_manager: class:`NetworkManager`
+    :param datapaths: The datapaths map that stores datapath id of the corresponding virtual mininet switch
+    :type datapaths: dict[str: ryu.controller.controller.Datapath]
+    """
 
     def __init__(self, network_manager, datapaths):
         super().__init__(network_manager, datapaths)

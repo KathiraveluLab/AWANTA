@@ -9,34 +9,12 @@ from .NodeMeasurement import NodeMeasurement
 from .TraceManager import TraceManager
 from ..utils.utils import file_splitter
 
-"""
-This extractor requires the latency data in the following format:
-1.json
-2.json
-3.json
-...
-
-where 1.json represents the latency data of packets from node 1. The json format is as follows:
-[
-{
-    2: float,
-    3: float,
-    ...
-    n: float
-},
-{
-    2: float,
-    3: float,
-    ....,
-    n: float
-}
-]
-
-Here this is format in 1.json. Each object in the array signifies the result in a timestep. Also the key, value in each object signify the destination node and the latency value from node 1.
-"""
-
-
 class CustomLatencyExtractor(TraceManager):
+    """This is a custom latency extractor that extracts latency from the trace results. Note that the trace results must be ogranized in a certain way to utilize this strategy.
+
+    :param path: The path to the trace measurements.
+    :type path: str
+    """
     def __init__(self, path):
         super().__init__(path)
 

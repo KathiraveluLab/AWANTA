@@ -3,6 +3,9 @@ from ...utils.constants import MininetConstants
 
 
 class FullMeshTopology(Topo):
+    """This class is a custom topology class for full mesh topology. You can create your own custom topology by following the mininet custom topology tutorial here - https://mininet.org/walkthrough/#custom-topologies.
+
+    """
     def __init__(self):
         # Initialize topology
         Topo.__init__(self)
