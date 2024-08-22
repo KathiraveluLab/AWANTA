@@ -9,11 +9,14 @@
 [//]: # ([![Github - Build]&#40;https://github.com/scrapinghub/dateparser/workflows/Build/badge.svg&#41;]&#40;https://github.com/scrapinghub/dateparser/actions&#41;)
 
 [//]: # ([![Code Coverage]&#40;https://codecov.io/gh/scrapinghub/dateparser/branch/master/graph/badge.svg&#41;]&#40;https://codecov.io/gh/scrapinghub/dateparser&#41;)
+<div align="center">
 
-[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](../../CODE_OF_CONDUCT.md)
-[![Documentation Status](https://readthedocs.org/projects/awanta-sdn-emulator/badge/?version=latest)](https://awanta-sdn-emulator.readthedocs.io/en/latest/?badge=latest)
-[![Discussion](https://img.shields.io/badge/Discuss-Ask%20Questions-blue])](https://github.com/KathiraveluLab/AWANTA/discussions)
+  <a href="https://www.python.org/downloads/release/python-370/">![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)</a>
+  <a href="https://github.com/KathiraveluLab/AWANTA/blob/dev/CODE_OF_CONDUCT.md">![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)</a>
+  <a href="https://awanta-sdn-emulator.readthedocs.io/en/latest/?badge=latest">![Documentation Status](https://readthedocs.org/projects/awanta-sdn-emulator/badge/?version=latest)</a>
+  <a href="https://github.com/KathiraveluLab/AWANTA/discussions">![Discussion](https://img.shields.io/badge/Discuss-Ask%20Questions-blue])</a>
+
+</div>
 
 This project provides an emulator designed to simulate a small, fully connected mesh network with n nodes. The primary purpose of this emulator is to demonstrate and analyze network path changes under varying conditions.
 Our emulator performs a trace-driven simulation, leveraging real-world latency data obtained from RIPE Atlas nodes. By injecting these latency traces during iperf tests conducted between the start and destination nodes, we can replicate realistic network conditions and observe the effects on performance.
