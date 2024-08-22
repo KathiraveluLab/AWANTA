@@ -6,9 +6,7 @@
   <h1>AWANTA SDN Emulator</h1>
 </div>
 
-[//]: # ([![Github - Build]&#40;https://github.com/scrapinghub/dateparser/workflows/Build/badge.svg&#41;]&#40;https://github.com/scrapinghub/dateparser/actions&#41;)
-
-[//]: # ([![Code Coverage]&#40;https://codecov.io/gh/scrapinghub/dateparser/branch/master/graph/badge.svg&#41;]&#40;https://codecov.io/gh/scrapinghub/dateparser&#41;)
+[//]: # (Need to add github actions - code coverage and build success badges)
 <div align="center">
 
   <a href="https://www.python.org/downloads/release/python-370/">![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)</a>
