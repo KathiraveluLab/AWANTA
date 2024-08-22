@@ -39,6 +39,7 @@ sphinxcontrib-jquery==4.1
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
+setuptools==65.5.1
 stevedore==5.2.0
 tinyrpc==1.1.7
 tomli==2.0.1
