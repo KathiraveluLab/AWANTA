@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trace Manager &mdash; AWANTA SDN Emulator 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Submodules" href="../src.trace_manager.html" />
+    <link rel="prev" title="Submodules" href="../src.routing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AWANTA SDN Emulator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../design.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../design.html#modules-high-level-modules">Modules (High-Level Modules)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design.html#activity-low-level-design">Activity (Low-Level Design)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design.html#periodic-process-loop">Periodic Process Loop</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../design.html#sub-modules">Sub-Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../routing/routing.html">Routing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trace Manager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class-diagram">Class Diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extraction-strategies">Extraction Strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module">Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../network_manager/network_manager.html">Network Manager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../emulation/emulation.html">Running an Emulation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AWANTA SDN Emulator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../design.html">Modules</a></li>
+      <li class="breadcrumb-item active">Trace Manager</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/trace_manager/trace_manager.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="trace-manager">
+<h1>Trace Manager<a class="headerlink" href="#trace-manager" title="Link to this heading"></a></h1>
+<p>The trace manager module is responsible for managing diverse trace extraction strategies. Any additional trace extraction strategies are to be implemented in the trace manager package by extending the <code class="docutils literal notranslate"><span class="pre">TraceManager</span></code> base class and implementing its functions.</p>
+<section id="class-diagram">
+<h2>Class Diagram<a class="headerlink" href="#class-diagram" title="Link to this heading"></a></h2>
+<img alt="../_images/TraceManager_ClassDiagram.png" src="../_images/TraceManager_ClassDiagram.png" />
+</section>
+<section id="extraction-strategies">
+<h2>Extraction Strategies<a class="headerlink" href="#extraction-strategies" title="Link to this heading"></a></h2>
+<section id="custom-latency-extractor">
+<h3>Custom Latency Extractor<a class="headerlink" href="#custom-latency-extractor" title="Link to this heading"></a></h3>
+<p>This extractor requires the latency data in the following format:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1.json
+2.json
+3.json
+...
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">1.json</span></code> represents the latency data of packets from node <code class="docutils literal notranslate"><span class="pre">1</span></code>. The json format is as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    {
+        2: float,
+        3: float,
+        ...
+        n: float
+    },
+    {
+        2: float,
+        3: float,
+        ....,
+        n: float
+    }
+]
+</pre></div>
+</div>
+<p>Here this is format in <code class="docutils literal notranslate"><span class="pre">1.json</span></code>. Each object in the array signifies the result in a timestep. Also the key, value in each object signify the destination node and the latency value from node <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</section>
+</section>
+<section id="module">
+<h2>Module<a class="headerlink" href="#module" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html#module-src.trace_manager.Measurement">src.trace_manager.Measurement module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../src.trace_manager.html#src.trace_manager.Measurement.Measurement"><code class="docutils literal notranslate"><span class="pre">Measurement</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html#module-src.trace_manager.NodeMeasurement">src.trace_manager.NodeMeasurement module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../src.trace_manager.html#src.trace_manager.NodeMeasurement.NodeMeasurement"><code class="docutils literal notranslate"><span class="pre">NodeMeasurement</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html#module-src.trace_manager.TraceManager">src.trace_manager.TraceManager module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../src.trace_manager.html#src.trace_manager.TraceManager.TraceManager"><code class="docutils literal notranslate"><span class="pre">TraceManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../src.trace_manager.html#module-src.trace_manager.custom_latency_extractor">src.trace_manager.custom_latency_extractor module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../src.trace_manager.html#src.trace_manager.custom_latency_extractor.CustomLatencyExtractor"><code class="docutils literal notranslate"><span class="pre">CustomLatencyExtractor</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../src.routing.html" class="btn btn-neutral float-left" title="Submodules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../src.trace_manager.html" class="btn btn-neutral float-right" title="Submodules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sai Vamsi Alisetti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

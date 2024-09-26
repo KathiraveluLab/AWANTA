@@ -6,21 +6,29 @@ from ryu.controller.handler import set_ev_cls
 from ryu.lib import hub
 from ryu.topology import event
 
-from network_manager import NetworkManager
-from routing import Routing
-from trace_manager import TraceManager
-from constants import *
+from src.routing.routing import Routing
+from src.trace_manager.TraceManager import TraceManager
+from src.network_manager.network_manager import NetworkManager
+from src.trace_manager import trace_manager
+from src.routing import routing
+
+from ryu import cfg
+from src.utils.constants import *
 
 
 class Controller(app_manager.RyuApp):
 
     def __init__(self, *args, **kwargs):
         super(Controller, self).__init__(*args, **kwargs)
-        self.network_manager = NetworkManager()
-        self.trace_manager = TraceManager(TraceManagerConstants.PATH)
-        self.latency_data = self.trace_manager.process_files()
         self.datapaths = {}
-        self.routing = Routing(self.network_manager, self.latency_data, self.datapaths)
+        self.network_manager = NetworkManager()
+        conf = cfg.CONF
+        conf.register_opts([
+            cfg.StrOpt('trace_manager', default="custom_latency_extractor", help=('Select the trace manager strategy')),
+            cfg.StrOpt('routing', default='latency_relaxing', help=('Select the routing strategy'))])
+
+        self.trace_manager: TraceManager = trace_manager[conf.trace_manager](TraceManagerConstants.PATH)
+        self.routing: Routing = routing[conf.routing](self.network_manager, self.datapaths)
         self.monitor_thread = hub.spawn(self._monitor)
 
     @set_ev_cls(ofp_event.EventOFPStateChange,
@@ -72,13 +80,20 @@ class Controller(app_manager.RyuApp):
 
     def _monitor(self):
         try:
+            self.trace_manager.process_files()
             while True:
                 if len(self.datapaths) != 0:
-                    self.routing.fetch_latency_results()
+                    measurement_data = self.trace_manager.get_next_state()
+                    if measurement_data is not None:
+                        self.routing.fetch_latency_results(measurement_data)
+                    else:
+                        raise StopIteration
                 hub.sleep(ControllerConstants.FREQUENCY)
+        except StopIteration as e:
+            self.logger.error("Reached End of Measurement Data, Stopping Periodic Routing")
         except Exception as e:
+            self.logger.error("Stopping Periodic Routing, Unexpected Error Occurred")
             raise e
-            self.logger.error("Stopping periodic routing")
 
     @set_ev_cls(event.EventSwitchEnter)
     def handler_switch_enter(self, ev):
