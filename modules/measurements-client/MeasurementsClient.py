@@ -85,9 +85,9 @@ def measure_latency():
                 output_line_separated = output_str.split('\n')
 
                 for line in output_line_separated:
-	                if len(line) > 1:
-	                    entries = line.split()
-	                    each_dict[entries[5]] = entries[10][6:-1]
+                    if len(line) > 1:
+                        entries = line.split()
+                        each_dict[entries[5]] = entries[10][6:-1]
                 
                 whole_dict[country] = each_dict
                 completed_countries.append(country)

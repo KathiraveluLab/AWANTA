@@ -21,7 +21,20 @@ Find the config.json file in the folder and modify accordingly.
 
 
 # Running the Sintra Measurements Client
+## For Linux
+Run the following command to start the measurements client:
 
-$ nohup python3 MeasurementsClient.py &
+```bash
+$ nohup python3 MeasurementsClient.py
+```
 
-The output is stored in sintra.out.
+
+## For Windows
+On Windows, you can use the following command to run the client:
+
+```bash
+$ start python MeasurementsClient.py
+```
+This will start the Sintra Measurements Client in a new command prompt window. 
+
+The output will be stored in `sintra.out`.

@@ -29,3 +29,4 @@ target/
 modules/measurements-client/sintra.csv
 env
 modules/emulator/__pycache__
+modules/measurements-client/output/
