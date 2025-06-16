@@ -25,5 +25,6 @@ The Software-Defined Wide Area Network (SD-WAN) Controller builds on top of Ryu.
 # Citing AWANTA
 
 If you use AWANTA in your research, please cite the below paper:
-
-* Kathiravelu, Pradeeban, Ananth Reddy Bhimireddy, and Judy Wawira Gichoya. "Network Measurements and Optimizations for Telehealth in Internet's Remote Regions." 2023 Tenth International Conference on Software Defined Systems (SDS). IEEE, 2023.
+* Caballero, E. S., Ramirez, J., Alisetti, S. V., Almario, S., and Kathiravelu, P. Network Measurements for Telehealth Optimizations. Understanding Internet Paths in Remote Regions. In Cluster Computing – The Journal of Networks Software Tools and Applications (CLUSTER). (IF: 2.7, Q1). June 2025. Springer. https://doi.org/10.1007/s10586-024-05069-z
+  
+* Kathiravelu, P., Bhimireddy, A., and Gichoya, J. W., "Network Measurements and Optimizations for Telehealth in Internet's Remote Regions." 2023 Tenth International Conference on Software Defined Systems (SDS). IEEE, 2023.
