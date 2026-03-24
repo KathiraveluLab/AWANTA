@@ -92,9 +92,9 @@ def measure_latency():
                 whole_dict[country] = each_dict
                 completed_countries.append(country)
             
-                # Write in a human readable file for every country's iteration.
-                with open(current_measurement_file, 'w') as f:
-                    f.write(json.dumps(whole_dict))
+            # Write in a human readable file after all countries have been processed.
+            with open(current_measurement_file, 'w') as f:
+                f.write(json.dumps(whole_dict))
             
             INIT_EXECUTION = False
 
