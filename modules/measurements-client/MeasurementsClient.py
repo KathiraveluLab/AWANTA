@@ -52,7 +52,7 @@ try:
     with open(latency_file, 'r') as f:
         whole_dict = json.load(f)
         INIT_EXECUTION = False
-except:
+except (FileNotFoundError, json.JSONDecodeError):
     logging.info("No existing JSON file. Initialized with empty value for the latency values")
 
 try:
