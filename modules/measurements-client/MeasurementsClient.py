@@ -58,7 +58,7 @@ except (FileNotFoundError, json.JSONDecodeError):
 try:
     with open(progress_file, 'r') as f:
         completed_countries = json.load(f)
-except:
+except (FileNotFoundError, json.JSONDecodeError):
     logging.info("No existing JSON file. Initialized with empty value for completed countries")
 
 def measure_latency():
