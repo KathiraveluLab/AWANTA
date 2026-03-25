@@ -132,11 +132,8 @@ class Routing(ABC):
         dpids = [MininetConstants.SRC_HOST] + dpids
         self.logger.info("Routing Path: %s", preprocess_ids(dpids.copy()))
 
-        for i in range(len(dpids)):
-            if i + 1 > len(dpids) - 1:
-                continue
-            elif i - 1 < 0:
-                continue
-
+        # Performance optimization: Start from index 1 and end at len - 1 to avoid redundant boundary checks
+        # This replaces checking boundary conditions inside the loop and running it for end nodes.
+        for i in range(1, len(dpids) - 1):
             self.set_ip_flow(dpids[i - 1], dpids[i], dpids[i + 1])
             self.set_ip_flow(dpids[i + 1], dpids[i], dpids[i - 1])

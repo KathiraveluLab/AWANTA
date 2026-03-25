@@ -36,5 +36,13 @@ class NetworkManager:
             link = l.to_dict()
             src = link[NetworkManagerConstants.SRC]
             dst = link[NetworkManagerConstants.DST]
-            self.links[convert_dpid_key(src[NetworkManagerConstants.DP_ID])] = self.links.get(convert_dpid_key(src[NetworkManagerConstants.DP_ID]), {})
-            self.links[convert_dpid_key(src[NetworkManagerConstants.DP_ID])][convert_dpid_key(dst[NetworkManagerConstants.DP_ID])] = (int(src[NetworkManagerConstants.PORT_NO]), int(dst[NetworkManagerConstants.PORT_NO]))
+
+            # Performance optimization: cache the converted dpid to avoid redundant function calls
+            # and repeated dictionary lookups.
+            src_dpid = convert_dpid_key(src[NetworkManagerConstants.DP_ID])
+            dst_dpid = convert_dpid_key(dst[NetworkManagerConstants.DP_ID])
+
+            if src_dpid not in self.links:
+                self.links[src_dpid] = {}
+
+            self.links[src_dpid][dst_dpid] = (int(src[NetworkManagerConstants.PORT_NO]), int(dst[NetworkManagerConstants.PORT_NO]))
