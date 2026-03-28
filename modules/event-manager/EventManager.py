@@ -2,6 +2,22 @@ import stomp
 import json
 import logging
 
+class EventListener(stomp.ConnectionListener):
+    def __init__(self, callback):
+        self.callback = callback
+        self.logger = logging.getLogger(__name__)
+
+    def on_error(self, frame):
+        self.logger.error(f'Received an error: {frame.body}')
+
+    def on_message(self, frame):
+        try:
+            data = json.loads(frame.body)
+            self.callback(data)
+        except Exception as e:
+            self.logger.error(f"Failed to process message: {e}")
+
+
 class EventManager:
     """
     EventManager handles the propagation of measurement changes as events
@@ -43,6 +59,25 @@ class EventManager:
             self.logger.error(f"Failed to publish event: {e}")
             return False
 
+    def subscribe(self, callback):
+        """
+        Subscribes to measurement events and triggers the callback.
+        
+        :param callback: Function to call when an event is received.
+        """
+        if not self.conn or not self.conn.is_connected():
+            if not self._connect():
+                return False
+        
+        try:
+            self.conn.set_listener('awanta_listener', EventListener(callback))
+            self.conn.subscribe(destination=self.destination, id=1, ack='auto')
+            self.logger.info(f"Subscribed to {self.destination}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Failed to subscribe: {e}")
+            return False
+
     def disconnect(self):
         """Disconnects from the broker."""
         if self.conn and self.conn.is_connected():
@@ -53,10 +88,15 @@ if __name__ == "__main__":
     # Small test block if run directly
     logging.basicConfig(level=logging.INFO)
     em = EventManager()
-    test_data = {"test": "latency", "value": 25.5}
-    success = em.publish_measurement(test_data)
-    if success:
-        print("Test publish successful!")
-    else:
-        print("Test publish failed (Broker might be offline).")
+    
+    def my_callback(data):
+        print(f"Callback received: {data}")
+
+    if em.subscribe(my_callback):
+        test_data = {"test": "latency", "value": 25.5}
+        em.publish_measurement(test_data)
+        # Give it a second to receive
+        import time
+        time.sleep(1)
+    
     em.disconnect()

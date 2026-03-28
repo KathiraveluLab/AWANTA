@@ -24,7 +24,7 @@ class Controller(app_manager.RyuApp):
         self.network_manager = NetworkManager()
         conf = cfg.CONF
         conf.register_opts([
-            cfg.StrOpt('trace_manager', default="custom_latency_extractor", help=('Select the trace manager strategy')),
+            cfg.StrOpt('trace_manager', default="custom_latency_extractor", help=('Select the trace manager strategy (custom_latency_extractor, event_trace_manager)')),
             cfg.StrOpt('routing', default='latency_relaxing', help=('Select the routing strategy'))])
 
         self.trace_manager: TraceManager = trace_manager[conf.trace_manager](TraceManagerConstants.PATH)
