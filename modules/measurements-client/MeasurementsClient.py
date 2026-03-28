@@ -11,6 +11,8 @@ import sys
 import schedule
 import pickle
 import threading
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event-manager')))
+from EventManager import EventManager
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -62,6 +64,8 @@ try:
 except:
     logging.info("No existing pickle file. Initialized with empty value for completed countries")
 
+event_manager = EventManager()
+
 def measure_latency():
     global whole_dict
     global EXTRACTION_RUNNING
@@ -95,6 +99,9 @@ def measure_latency():
                 # Write in a human readable file for every country's iteration.
                 with open(current_measurement_file, 'w') as f:
                     f.write(json.dumps(whole_dict))
+                
+                # Publish event via Event Manager
+                event_manager.publish_measurement({"country": country, "data": each_dict})
             
             INIT_EXECUTION = False
 
