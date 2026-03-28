@@ -1,15 +1,10 @@
 import logging
 import os
-import signal
-import csv
 import time
-import shutil
 import subprocess
-import datetime
 import json
 import sys
 import schedule
-import pickle
 import threading
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event-manager')))
 from EventManager import EventManager
@@ -31,8 +26,8 @@ EXTRACTION_RUNNING = False
 TRIMMED_LOGS = False
 INIT_EXECUTION = True
 
-latency_file = 'output/latency.pickle'
-progress_file = 'output/progress.pickle'
+latency_file = 'output/latency.json'
+progress_file = 'output/progress.json'
 human_readable_measurements = 'output/sintra_measurements'
 iteration = 0
 
@@ -50,19 +45,19 @@ whole_dict = dict()
 completed_countries = list()            
 
 
-# All meaured endpoints are saved between iterations as pickle files.
+# All measured endpoints are saved between iterations as JSON files.
 try:
-    with open(latency_file, 'rb') as f:
-        whole_dict = pickle.load(f)
+    with open(latency_file, 'r') as f:
+        whole_dict = json.load(f)
         INIT_EXECUTION = False
-except:
-    logging.info("No existing pickle file. Initialized with empty value for the latency values")
+except (FileNotFoundError, json.JSONDecodeError):
+    logging.info("No existing JSON file. Initialized with empty value for the latency values")
 
 try:
-    with open(progress_file, 'rb') as f:
-        completed_countries = pickle.load(f)
-except:
-    logging.info("No existing pickle file. Initialized with empty value for completed countries")
+    with open(progress_file, 'r') as f:
+        completed_countries = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    logging.info("No existing JSON file. Initialized with empty value for completed countries")
 
 event_manager = EventManager()
 
@@ -95,13 +90,12 @@ def measure_latency():
                 
                 whole_dict[country] = each_dict
                 completed_countries.append(country)
-            
-                # Write in a human readable file for every country's iteration.
-                with open(current_measurement_file, 'w') as f:
-                    f.write(json.dumps(whole_dict))
-                
-                # Publish event via Event Manager
+                # Publish event via Event Manager for real-time propagation
                 event_manager.publish_measurement({"country": country, "data": each_dict})
+            
+            # Write in a human readable file after all countries have been processed.
+            with open(current_measurement_file, 'w') as f:
+                json.dump(whole_dict, f)
             
             INIT_EXECUTION = False
 
@@ -118,15 +112,15 @@ def measure_latency():
         logging.info(whole_dict)
 
 
-# Write the pickle file periodically to track the progress and persist it to the filesystem
-def update_pickle():
+# Write the JSON file periodically to track the progress and persist it to the filesystem
+def update_json():
     global whole_dict
     global completed_countries
-    with open(latency_file, 'wb') as f:
-        pickle.dump(whole_dict, f)
-    with open(progress_file, 'wb') as f:
-        pickle.dump(completed_countries, f)    
-    logging.info('Progress is recorded to the pickle file')
+    with open(latency_file, 'w') as f:
+        json.dump(whole_dict, f)
+    with open(progress_file, 'w') as f:
+        json.dump(completed_countries, f)
+    logging.info('Progress is recorded to the JSON file')
 
 def run_threaded(job_func):
     job_thread = threading.Thread(target=job_func)
@@ -134,7 +128,7 @@ def run_threaded(job_func):
     
 # The thread scheduling
 schedule.every(1).minutes.do(run_threaded, measure_latency)
-schedule.every(2).minutes.do(run_threaded, update_pickle)
+schedule.every(2).minutes.do(run_threaded, update_json)
 
 # Keep running in a loop.
 while True:
