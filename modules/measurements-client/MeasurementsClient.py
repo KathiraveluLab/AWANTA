@@ -94,7 +94,7 @@ def measure_latency():
             
             # Write in a human readable file after all countries have been processed.
             with open(current_measurement_file, 'w') as f:
-                f.write(json.dumps(whole_dict))
+                json.dump(whole_dict, f)
             
             INIT_EXECUTION = False
 
