@@ -35,12 +35,17 @@ class EventTraceManager(TraceManager):
             measurements_dict = data.get('data', {})
             
             measurements: list[Measurement] = []
-            for target, rtt in measurements_dict.items():
-                # In a real scenario, we'd map 'target' IP to a DPID
-                # For now, we use a simple integer conversion or placeholder
+            for target, metrics in measurements_dict.items():
                 try:
                     src_id = int(hash(country) % 100) # Placeholder mapping
-                    measurements.append(Measurement(src_id, float(rtt)))
+                    if isinstance(metrics, dict):
+                        rtt = metrics.get('rtt', 0.0)
+                        jitter = metrics.get('jitter', 0.0)
+                        hop_count = metrics.get('hop_count', 0)
+                        measurements.append(Measurement(src_id, float(rtt or 0.0), float(jitter or 0.0), int(hop_count or 0)))
+                    else:
+                        # Legacy support for simple RTT values
+                        measurements.append(Measurement(src_id, float(metrics)))
                 except:
                     continue
             

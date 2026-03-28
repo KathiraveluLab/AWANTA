@@ -79,14 +79,37 @@ def measure_latency():
             for country in from_countries:
                 logging.info('Measuring for country: ' + country)
                 each_dict = dict()
-                ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3} --packets {4} --size {5}".format(measure, target, no_of_probes, country, packets, size), capture_output=True, shell=True, encoding="utf8")
-                output_str = ripe.stdout
-                output_line_separated = output_str.split('\n')
+                # Using --renderer json for precise data extraction and jitter calculation
+                ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3} --packets {4} --size {5} --renderer json".format(measure, target, no_of_probes, country, packets, size), capture_output=True, shell=True, encoding="utf8")
+                
+                try:
+                    results = json.loads(ripe.stdout)
+                    for res in results:
+                        probe_id = str(res.get('prb_id'))
+                        rtts = [r.get('rtt') for r in res.get('result', []) if r.get('rtt') is not None]
+                        
+                        avg_rtt = 0.0
+                        jitter = 0.0
+                        if rtts:
+                            avg_rtt = sum(rtts) / len(rtts)
+                            # Jitter as Standard Deviation
+                            variance = sum((x - avg_rtt) ** 2 for x in rtts) / len(rtts)
+                            jitter = variance ** 0.5
+                        
+                        # Traceroute for hop count analysis
+                        hop_count = 0
+                        try:
+                            tr_ripe = subprocess.run("ripe-atlas measure traceroute --target {0} --probes {1} --from-country {2} --renderer json".format(target, 1, country), capture_output=True, shell=True, encoding="utf8")
+                            tr_results = json.loads(tr_ripe.stdout)
+                            if tr_results and isinstance(tr_results, list):
+                                # The number of elements in the 'result' array represents the hops
+                                hop_count = len(tr_results[0].get('result', []))
+                        except Exception as tr_e:
+                            logging.error(f"Error performing traceroute for probe {probe_id} in {country}: {tr_e}")
 
-                for line in output_line_separated:
-                    if len(line) > 1:
-                        entries = line.split()
-                        each_dict[entries[5]] = entries[10][6:-1]
+                        each_dict[probe_id] = {"rtt": avg_rtt, "jitter": jitter, "hop_count": hop_count}
+                except Exception as e:
+                    logging.error(f"Error parsing RIPE Atlas output for {country}: {e}")
                 
                 whole_dict[country] = each_dict
                 completed_countries.append(country)

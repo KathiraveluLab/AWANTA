@@ -29,10 +29,10 @@ class TestEventTraceManager(unittest.TestCase):
         args, kwargs = mock_conn.set_listener.call_args
         listener = kwargs.get('listener') or args[1]
         
-        # Simulate an incoming message
-        test_data = {"country": "AD", "data": {"99.79.30.74": "25.5"}}
+        # Simulate an incoming message with jitter and hop count
+        test_data_json = '{"country": "AD", "data": {"99.79.30.74": {"rtt": 25.5, "jitter": 1.2, "hop_count": 5}}}'
         frame = MagicMock()
-        frame.body = '{"country": "AD", "data": {"99.79.30.74": "25.5"}}'
+        frame.body = test_data_json
         listener.on_message(frame)
         
         # Get next state from ET Manager
@@ -42,6 +42,8 @@ class TestEventTraceManager(unittest.TestCase):
         self.assertEqual(len(state), 1)
         self.assertIsInstance(state[0], Measurement)
         self.assertEqual(state[0].metric, 25.5)
+        self.assertEqual(state[0].jitter, 1.2)
+        self.assertEqual(state[0].hop_count, 5)
 
 if __name__ == '__main__':
     unittest.main()
