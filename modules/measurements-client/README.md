@@ -2,6 +2,17 @@
 
 The AWANTA Measurements Client performs network measurements based on the RIPE Atlas framework. It is a core component of the AWANTA framework for adaptive SDN-based telehealth access.
 
+## Prerequisites
+
+1. **Install RIPE Atlas Tools**:
+   ```bash
+   pip install ripe-atlas-tools
+   ```
+2. **Configure API Key**:
+   ```bash
+   ripe-atlas configure --set-key <YOUR_API_KEY>
+   ```
+
 ## Running the AWANTA Measurements Client
 
 To start the client, run:

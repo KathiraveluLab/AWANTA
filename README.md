@@ -7,7 +7,13 @@
 
 ## measurements-client
 
-The Measurements Client is based on [RIPE Atlas](https://atlas.ripe.net/) and RIPE Atlas Tools. It assumes existing RIPE Atlas credits acquired by hosting a probe locally or through credits transfer from someone who has accumulated some credits themselves. Then [configure the RIPE Atlas Tools](https://ripe-atlas-tools.readthedocs.io/en/latest/use.html#configuration), which is a Python-based library. The Measurements Client builds on top of the RIPE Atlas. 
+The Measurements Client is based on [RIPE Atlas](https://atlas.ripe.net/) and RIPE Atlas Tools. 
+
+### Installation and Configuration
+1. **Install the tools**: `pip install ripe-atlas-tools`
+2. **Configure your API key**: `ripe-atlas configure --set-key <YOUR_API_KEY>`
+
+The `MeasurementsClient.py` will then automatically use that configuration to execute measurements.
 
 ## cloud-router
 
