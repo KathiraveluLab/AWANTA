@@ -15,11 +15,13 @@ class LatencyRelaxing(Routing):
         one_hop_node = None
         output_dpids = [source_dpid]
 
-        for i in range(source_index, len(self.rtt_matrix)):
-            for j in range(target_index):
-                if self.rtt_matrix[i][j] + self.rtt_matrix[j][target_index] < direct_link:
-                    direct_link = self.rtt_matrix[i][j] + self.rtt_matrix[j][target_index]
-                    one_hop_node = self.index_to_link[j]
+        for j in range(len(self.rtt_matrix)):
+            if j == source_index or j == target_index:
+                continue
+            latency = self.rtt_matrix[source_index][j] + self.rtt_matrix[j][target_index]
+            if latency < direct_link:
+                direct_link = latency
+                one_hop_node = self.index_to_link[j]
 
         if one_hop_node != None:
             output_dpids.append(one_hop_node)

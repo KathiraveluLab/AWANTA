@@ -8,6 +8,10 @@ import schedule
 import threading
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event-manager')))
 from EventManager import EventManager
+import threading
+
+data_lock = threading.Lock()
+
 
 with open('config.json', 'r') as f:
     config = json.load(f)
@@ -80,7 +84,16 @@ def measure_latency():
                 logging.info('Measuring for country: ' + country)
                 each_dict = dict()
                 # Using --renderer json for precise data extraction and jitter calculation
-                ripe = subprocess.run("ripe-atlas measure {0} --target {1} --probes {2} --from-country {3} --packets {4} --size {5} --renderer json".format(measure, target, no_of_probes, country, packets, size), capture_output=True, shell=True, encoding="utf8")
+                cmd = [
+                    "ripe-atlas", "measure", str(measure),
+                    "--target", str(target),
+                    "--probes", str(no_of_probes),
+                    "--from-country", str(country),
+                    "--packets", str(packets),
+                    "--size", str(size),
+                    "--renderer", "json"
+                ]
+                ripe = subprocess.run(cmd, capture_output=True, shell=False, encoding="utf8")
                 
                 try:
                     results = json.loads(ripe.stdout)
@@ -99,7 +112,13 @@ def measure_latency():
                         # Traceroute for hop count analysis
                         hop_count = 0
                         try:
-                            tr_ripe = subprocess.run("ripe-atlas measure traceroute --target {0} --probes {1} --from-country {2} --renderer json".format(target, 1, country), capture_output=True, shell=True, encoding="utf8")
+                            tr_cmd = [
+                                "ripe-atlas", "measure", "traceroute",
+                                "--target", str(target),
+                                "--probes", str(probe_id),
+                                "--renderer", "json"
+                            ]
+                            tr_ripe = subprocess.run(tr_cmd, capture_output=True, shell=False, encoding="utf8")
                             tr_results = json.loads(tr_ripe.stdout)
                             if tr_results and isinstance(tr_results, list):
                                 # The number of elements in the 'result' array represents the hops
@@ -111,8 +130,9 @@ def measure_latency():
                 except Exception as e:
                     logging.error(f"Error parsing RIPE Atlas output for {country}: {e}")
                 
-                whole_dict[country] = each_dict
-                completed_countries.append(country)
+                with data_lock:
+                    whole_dict[country] = each_dict
+                    completed_countries.append(country)
                 # Publish event via Event Manager for real-time propagation
                 event_manager.publish_measurement({"country": country, "data": each_dict})
             
@@ -139,10 +159,11 @@ def measure_latency():
 def update_json():
     global whole_dict
     global completed_countries
-    with open(latency_file, 'w') as f:
-        json.dump(whole_dict, f)
-    with open(progress_file, 'w') as f:
-        json.dump(completed_countries, f)
+    with data_lock:
+        with open(latency_file, 'w') as f:
+            json.dump(whole_dict, f)
+        with open(progress_file, 'w') as f:
+            json.dump(completed_countries, f)
     logging.info('Progress is recorded to the JSON file')
 
 def run_threaded(job_func):
