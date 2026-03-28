@@ -6,10 +6,15 @@ class CloudRouter:
     CloudRouter provides a unified interface for decentralized routing.
     In the AWANTA framework, a Cloud Router instance runs on each edge node.
     """
+    STRATEGIES = {
+        'latency_relaxing': LatencyRelaxing
+    }
+
     def __init__(self, network_manager, datapaths, strategy='latency_relaxing'):
         self.logger = logging.getLogger(__name__)
-        if strategy == 'latency_relaxing':
-            self.routing_strategy = LatencyRelaxing(network_manager, datapaths)
+        strategy_class = self.STRATEGIES.get(strategy)
+        if strategy_class:
+            self.routing_strategy = strategy_class(network_manager, datapaths)
         else:
             raise ValueError(f"Unknown routing strategy: {strategy}")
 

@@ -46,7 +46,8 @@ class EventTraceManager(TraceManager):
                     else:
                         # Legacy support for simple RTT values
                         measurements.append(Measurement(src_id, float(metrics)))
-                except:
+                except Exception as e:
+                    self.logger.warning(f"Failed to process measurement for target {target}: {e}")
                     continue
             
             if measurements:
@@ -68,6 +69,10 @@ class EventTraceManager(TraceManager):
         except queue.Empty:
             return [] # Return empty list if no new data, monitor loop will sleep and retry
 
-    def __del__(self):
+    def close(self):
+        """Explicitly disconnect from the event manager."""
         if hasattr(self, 'event_manager'):
             self.event_manager.disconnect()
+
+    def __del__(self):
+        self.close()

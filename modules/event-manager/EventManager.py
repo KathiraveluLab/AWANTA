@@ -14,6 +14,8 @@ class EventListener(stomp.ConnectionListener):
         try:
             data = json.loads(frame.body)
             self.callback(data)
+        except json.JSONDecodeError as e:
+            self.logger.error(f"Failed to decode JSON message: {e}")
         except Exception as e:
             self.logger.error(f"Failed to process message: {e}")
 
@@ -36,6 +38,9 @@ class EventManager:
             self.conn = stomp.Connection([(self.host, self.port)])
             self.conn.connect(wait=True)
             return True
+        except stomp.exception.ConnectFailedException as e:
+            self.logger.error(f"Failed to connect to ActiveMQ broker (Connection Failed) at {self.host}:{self.port} - {e}")
+            return False
         except Exception as e:
             self.logger.error(f"Failed to connect to ActiveMQ broker at {self.host}:{self.port} - {e}")
             return False
