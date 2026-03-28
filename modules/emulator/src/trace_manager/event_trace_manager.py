@@ -46,7 +46,8 @@ class EventTraceManager(TraceManager):
                     else:
                         # Legacy support for simple RTT values
                         measurements.append(Measurement(src_id, float(metrics)))
-                except Exception:
+                except Exception as e:
+                    self.logger.warning(f"Failed to process measurement for target {target}: {e}")
                     continue
             
             if measurements:

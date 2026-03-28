@@ -8,7 +8,6 @@ import schedule
 import threading
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event-manager')))
 from EventManager import EventManager
-import threading
 
 data_lock = threading.Lock()
 
