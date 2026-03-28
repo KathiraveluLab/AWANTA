@@ -28,7 +28,7 @@ INIT_EXECUTION = True
 
 latency_file = 'output/latency.json'
 progress_file = 'output/progress.json'
-human_readable_measurements = 'output/sintra_measurements'
+awanta_measurements = 'output/awanta_measurements'
 iteration = 0
 
 if not os.path.exists('output'):
@@ -36,9 +36,9 @@ if not os.path.exists('output'):
 
 # Output in a preferred format.
 if TRIMMED_LOGS:
-    logging.basicConfig(filename='output/sintra.out', level=logging.INFO, format='%(message)s')
+    logging.basicConfig(filename='output/awanta.out', level=logging.INFO, format='%(message)s')
 else:
-	logging.basicConfig(filename='output/sintra.out', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+	logging.basicConfig(filename='output/awanta.out', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 # A dictionary of dictionaries, to store the output of measurements: [country:[src: rtt]]
 whole_dict = dict()
@@ -66,7 +66,7 @@ def measure_latency():
     global EXTRACTION_RUNNING
     global INIT_EXECUTION
     global iteration
-    current_measurement_file = human_readable_measurements + str(iteration)
+    current_measurement_file = awanta_measurements + str(iteration)
 
     if EXTRACTION_RUNNING:
         logging.info("Previous measurement still running. Skip this iteration.......................")
