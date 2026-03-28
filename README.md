@@ -1,6 +1,39 @@
-# An SD-WAN framework for telehealth access
-
 **AWANTA (A**daptive Software-Defined **W**ide **A**rea **N**etwork framework for **T**elehealth **A**ccess) performs inter-domain network transfers for telehealth, in a network latency-aware manner.
+
+## Architecture
+
+```mermaid
+graph TD
+    subgraph Edge_Node ["Edge Node (Client)"]
+        MC[Measurements Client]
+        CR[Cloud Router]
+        EM[Event Manager]
+    end
+
+    subgraph Infrastructure ["Cloud Infrastructure"]
+        AMQ[ActiveMQ Broker]
+    end
+
+    subgraph Control_Plane ["SD-WAN Controller"]
+        SC[Ryu Controller]
+        ETM[Event Trace Manager]
+    end
+
+    subgraph Analytics ["Analytics & Visualization"]
+        GF[Goldfish]
+    end
+
+    RA[RIPE Atlas] -- "Network Metrics" --> MC
+    RA -- "Historical Data" --> GF
+    MC -- "Performance Data" --> CR
+    MC -- "State Updates" --> EM
+    EM -- "STOMP Events" --> AMQ
+    AMQ -- "Real-time Telemetry" --> ETM
+    ETM -- "Network State" --> SC
+    SC -- "Flow Rules" --> Edge_Node
+
+    click GF "https://github.com/KathiraveluLab/Goldfish" "Goldfish Repository"
+```
 
 
 # Modules
