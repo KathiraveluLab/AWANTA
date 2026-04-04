@@ -4,7 +4,7 @@ certifi==2024.7.4
 cffi==1.17.1
 charset-normalizer==3.3.2
 colorama==0.4.6
-cryptography==44.0.1
+cryptography==46.0.6
 debtcollector==3.0.0
 dnspython==1.16.0
 docutils==0.20.1
