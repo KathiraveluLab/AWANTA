@@ -38,7 +38,7 @@ graph TD
 
 # Modules
 
-## measurements-client
+## measurements_client
 
 The Measurements Client is based on [RIPE Atlas](https://atlas.ripe.net/) and RIPE Atlas Tools. 
 
@@ -48,11 +48,11 @@ The Measurements Client is based on [RIPE Atlas](https://atlas.ripe.net/) and RI
 
 The `MeasurementsClient.py` will then automatically use that configuration to execute measurements.
 
-## cloud-router
+## cloud_router
 
 A decentralized cloud router in all the client nodes.
 
-## event-manager
+## event_manager
 
 Propagates the changes in measurements as events to a broker.
 

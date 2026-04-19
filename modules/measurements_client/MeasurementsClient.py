@@ -6,7 +6,7 @@ import json
 import sys
 import schedule
 import threading
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event-manager')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'event_manager')))
 from EventManager import EventManager
 
 data_lock = threading.Lock()

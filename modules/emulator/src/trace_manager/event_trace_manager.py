@@ -8,8 +8,8 @@ from .Measurement import Measurement
 from .NodeMeasurement import NodeMeasurement
 from .TraceManager import TraceManager
 
-# Add event-manager to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'event-manager')))
+# Add event_manager to path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'event_manager')))
 from EventManager import EventManager
 
 class EventTraceManager(TraceManager):

@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 # Add modules to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'modules', 'event-manager')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'modules', 'event_manager')))
 
 from EventManager import EventManager
 

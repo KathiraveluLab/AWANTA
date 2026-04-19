@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import queue
 
 # Add modules to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'modules', 'event-manager')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'modules', 'event_manager')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'modules', 'emulator')))
 
 from EventManager import EventManager
