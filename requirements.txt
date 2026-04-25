@@ -9,7 +9,7 @@ debtcollector==3.0.0
 dnspython==2.8.0
 docutils==0.20.1
 eventlet==0.41.0
-greenlet==3.0.3
+greenlet==3.4.0
 idna==3.7
 imagesize==1.4.1
 importlib_metadata==8.2.0
