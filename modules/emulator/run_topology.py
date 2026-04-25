@@ -1,7 +1,7 @@
 from mininet.cli import CLI
 from mininet.log import setLogLevel
 from mininet.net import Mininet
-from mininet.node import RemoteController, CPULimitedHost
+from mininet.node import RemoteController, Host
 import argparse
 from src.utils.constants import MininetConstants
 from src.network_manager.custom_topologies import topology_map
@@ -9,7 +9,7 @@ from src.network_manager.custom_topologies import topology_map
 def run(args):
     c = RemoteController(MininetConstants.CONTROLLER_LABEL, MininetConstants.CONTROLLER_IP, MininetConstants.CONTROLLER_PORT)
     topo = topology_map[args.topology]
-    net = Mininet(topo=topo, host=CPULimitedHost, controller=None)
+    net = Mininet(topo=topo, host=Host, controller=None)
     net.addController(c)
     net.start()
 

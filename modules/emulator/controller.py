@@ -6,11 +6,15 @@ from ryu.controller.handler import set_ev_cls
 from ryu.lib import hub
 from ryu.topology import event
 
-from src.routing.routing import Routing
-from src.trace_manager.TraceManager import TraceManager
-from src.network_manager.network_manager import NetworkManager
-from src.trace_manager import trace_manager
-from src.routing import routing
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from modules.cloud_router.src.routing.routing import Routing
+from modules.emulator.src.trace_manager.TraceManager import TraceManager
+from modules.emulator.src.network_manager.network_manager import NetworkManager
+from modules.emulator.src.trace_manager import trace_manager
+from modules.emulator.src.routing import routing
 
 from ryu import cfg
 from src.utils.constants import *
