@@ -24,7 +24,7 @@ oslo.i18n==6.3.0
 ovs==3.4.0
 packaging==24.1
 pbr==6.0.0
-pycparser==2.23
+pycparser==3.0
 Pygments==2.18.0
 pyOpenSSL==26.0.0
 python-dateutil==2.9.0.post0
