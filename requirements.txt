@@ -5,7 +5,7 @@ cffi==2.0.0
 charset-normalizer==3.3.2
 colorama==0.4.6
 cryptography==46.0.7
-debtcollector==3.0.0
+debtcollector==3.1.0
 dnspython==2.8.0
 docutils==0.20.1
 eventlet==0.41.0
