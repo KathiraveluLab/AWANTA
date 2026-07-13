@@ -37,3 +37,7 @@ _bmad
 .cursor
 
 .jules/
+.venv/
+modules/measurements_client/output/
+__pycache__/
+*.pyc

@@ -6,7 +6,7 @@ import os
 # Add the root directory to sys.path to allow imports from modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
 
-from modules.emulator.src.routing.latency_relaxing import LatencyRelaxing
+from modules.cloud_router.src.routing.latency_relaxing import LatencyRelaxing
 from modules.emulator.src.trace_manager.Measurement import Measurement
 from modules.emulator.src.utils.constants import MininetConstants
 
