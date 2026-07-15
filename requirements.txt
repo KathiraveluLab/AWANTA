@@ -32,17 +32,17 @@ pytz==2025.1
 pywin32==311; sys_platform == 'win32'
 PyYAML==6.0.3
 repoze.lru==0.7
-requests==2.33.1
+requests==2.32.4
 rfc3986==2.0.0
-ripe.atlas.cousteau==2.0.0
-ripe.atlas.sagan==1.3.1
+ripe.atlas.cousteau==2.2.0
+ripe.atlas.sagan==2.0.1
 ripe.atlas.tools==3.3.1
 Routes==2.5.1
 schedule==1.2.2
 six==1.16.0
 snowballstemmer==3.0.1
 sortedcontainers==2.4.0
-Sphinx==9.1.0
+Sphinx==8.1.3
 sphinx-rtd-theme==3.1.0
 sphinxcontrib-applehelp==2.0.0
 sphinxcontrib-devhelp==2.0.0
@@ -60,7 +60,6 @@ tzlocal==5.3
 stomp.py==8.1.2
 urllib3==2.7.0
 WebOb==1.8.8
-websocket-client==1.3.3
-wrapt==2.1.2
+websocket-client==1.9.0
+wrapt==2.2.2
 zipp==3.20.0
-
