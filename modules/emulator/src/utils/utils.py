@@ -10,7 +10,9 @@ def file_splitter(file_name: str) -> str:
     if extension == TraceManagerConstants.EXTENSION:
         return filename
     else:
-        raise ExtensionError
+        raise ExtensionError(
+            f"Unsupported file extension: expected '.{TraceManagerConstants.EXTENSION}', got file '{file_name}'"
+        )
 
 
 def convert_dpid_key(dpid: str) -> int:
