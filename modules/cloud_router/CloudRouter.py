@@ -1,5 +1,6 @@
 import logging
 from .src.routing.latency_relaxing import LatencyRelaxing
+from .src.routing.two_hop_relaxing import TwoHopRelaxing
 
 class CloudRouter:
     """
@@ -7,7 +8,8 @@ class CloudRouter:
     In the AWANTA framework, a Cloud Router instance runs on each edge node.
     """
     STRATEGIES = {
-        'latency_relaxing': LatencyRelaxing
+        'latency_relaxing': LatencyRelaxing,
+        'two_hop_relaxing': TwoHopRelaxing,
     }
 
     def __init__(self, network_manager, datapaths, strategy='latency_relaxing'):
