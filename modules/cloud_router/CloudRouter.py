@@ -1,5 +1,12 @@
 import logging
 from .src.routing.latency_relaxing import LatencyRelaxing
+from .src.routing.composite_metric_relaxing import CompositeMetricRelaxing
+
+STRATEGIES = {
+        'latency_relaxing': LatencyRelaxing,
+        'two_hop_relaxing': TwoHopRelaxing,
+        'composite_metric_relaxing': CompositeMetricRelaxing,
+    }
 
 class CloudRouter:
     """
