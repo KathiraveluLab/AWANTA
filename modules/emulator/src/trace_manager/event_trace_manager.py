@@ -42,7 +42,7 @@ class EventTraceManager(TraceManager):
                 raw_mapping = json.load(f)
             # Normalize country codes to upper-case and dpids to int
             return {str(country).upper(): int(dpid) for country, dpid in raw_mapping.items()}
-        except Exception as e:
+        except (FileNotFoundError, json.JSONDecodeError, AttributeError, ValueError, TypeError) as e:
             self.logger.warning(
                 f"Could not load country-dpid mapping from {mapping_path} ({e}). "
                 f"Falling back to hash-based mapping for all countries."
@@ -70,9 +70,8 @@ class EventTraceManager(TraceManager):
 
         # Spread unmapped countries across the switches that actually exist,
         # with dpids starting at 1 (matching the topology's numbering).
-        import hashlib
-        country_hash = int(hashlib.md5(normalized_country.encode('utf-8')).hexdigest(), 16)
-        return (country_hash % MininetConstants.NUM_FULL_MESH) + 1
+        import zlib
+        return (zlib.adler32(normalized_country.encode('utf-8')) % MininetConstants.NUM_FULL_MESH) + 1
 
     def _event_callback(self, data):
         """Callback triggered when a new measurement event arrives."""

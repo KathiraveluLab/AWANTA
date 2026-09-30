@@ -169,7 +169,8 @@ def measure_latency():
         iteration += 1
         
         logging.info('Total run time: %s %s', (time.time() - t_start)/60, ' minutes!')
-        EXTRACTION_RUNNING = False
+        with data_lock:
+            EXTRACTION_RUNNING = False
 
         
         logging.info(whole_dict)
