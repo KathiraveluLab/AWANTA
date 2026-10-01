@@ -104,6 +104,18 @@ First, ensure your virtual environment is set up and all requirements are instal
    source .venv/bin/activate
    ryu-manager --observe-links modules/emulator/controller.py
    ```
+### One-command run
+
+Alternatively, once `./setup_env.sh` has been run, you can start both the 
+controller and the Mininet topology together, with automatic cleanup on exit:
+
+```bash
+./run_awanta.sh -topo full_mesh_topology -trace custom_latency_extractor -routing latency_relaxing
+```
+
+All three flags are optional and default to the values shown above. Exiting 
+the Mininet CLI (type `exit`) will automatically stop the Ryu controller and 
+clean up Mininet state.
 
 # Citing AWANTA
 
