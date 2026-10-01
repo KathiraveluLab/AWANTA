@@ -23,4 +23,11 @@ pip install "ryu==4.34" --no-build-isolation --no-cache-dir
 echo "[4/4] Patching ryu for compatibility with modern oslo/eventlet..."
 python "$SCRIPT_DIR/scripts/patch_ryu.py"
 
+# setuptools was intentionally downgraded earlier to install ryu's legacy
+# build, but ryu itself doesn't need setuptools at runtime once installed.
+# Restore a modern setuptools so the rest of the environment isn't left on
+# a 2021-era version, which could break other packages or future installs.
+echo "Restoring a modern setuptools now that ryu is installed..."
+pip install --upgrade setuptools
+
 echo "Setup complete! You can now run the AWANTA components."

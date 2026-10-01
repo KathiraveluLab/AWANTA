@@ -12,10 +12,75 @@ from EventManager import EventManager
 data_lock = threading.Lock()
 
 
-with open('config.json', 'r') as f:
+REQUIRED_CONFIG_SCHEMA = {
+    "Target": str,
+    "NoOfProbes": int,
+    "From": list,
+    "Measure": str,
+    "Me": str,
+    "Packets": int,
+    "Size": int,
+}
+
+
+def validate_config(config):
+    """
+    Validates config.json against the fields MeasurementsClient actually
+    needs. Collects every problem found instead of stopping at the first
+    one, so a contributor setting up config.json for the first time can
+    fix everything in a single pass rather than one confusing KeyError
+    at a time.
+    """
+    errors = []
+
+    for key, expected_type in REQUIRED_CONFIG_SCHEMA.items():
+        if key not in config:
+            errors.append(f"Missing required key: '{key}'")
+            continue
+        val = config[key]
+        if not isinstance(val, expected_type) or (expected_type is int and isinstance(val, bool)):
+            errors.append(
+                f"'{key}' should be of type {expected_type.__name__}, "
+                f"got {type(val).__name__}"
+            )
+
+    # Value-level checks, only run if the type checks above already passed
+    # for that field (no point checking .strip() on something that isn't
+    # a string, for example).
+    if isinstance(config.get("Target"), str) and not config["Target"].strip():
+        errors.append("'Target' cannot be an empty string")
+
+    if isinstance(config.get("From"), list):
+        if len(config["From"]) == 0:
+            errors.append("'From' cannot be an empty list")
+        elif not all(isinstance(c, str) and len(c) == 2 for c in config["From"]):
+            errors.append("'From' must be a list of 2-letter country codes (e.g. 'US', 'IN')")
+
+    no_of_probes = config.get("NoOfProbes")
+    if isinstance(no_of_probes, int) and not isinstance(no_of_probes, bool) and no_of_probes <= 0:
+        errors.append("'NoOfProbes' must be a positive integer")
+
+    packets = config.get("Packets")
+    if isinstance(packets, int) and not isinstance(packets, bool) and packets <= 0:
+        errors.append("'Packets' must be a positive integer")
+
+    size = config.get("Size")
+    if isinstance(size, int) and not isinstance(size, bool) and size <= 0:
+        errors.append("'Size' must be a positive integer")
+
+    if errors:
+        error_message = "Invalid config.json:\n  - " + "\n  - ".join(errors)
+        raise ValueError(error_message)
+
+
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
+
+with open(CONFIG_PATH, 'r') as f:
     config = json.load(f)
 
+validate_config(config)
 
+#Get the constants for the RIPE Atlas Measurements from config.json.
 target = config['Target']
 no_of_probes = config['NoOfProbes']
 from_countries = config['From']
@@ -88,7 +153,7 @@ def measure_country(country):
         results = json.loads(ripe.stdout)
         for res in results:
             probe_id = str(res.get('prb_id'))
-            rtts = [r.get('rtt') for r in res.get('result', []) if r.get('rtt') is not None]
+            rtts = [r.get('rtt') for r in (res.get('result') or []) if r.get('rtt') is not None]
 
             avg_rtt = 0.0
             jitter = 0.0
@@ -111,7 +176,7 @@ def measure_country(country):
                 tr_results = json.loads(tr_ripe.stdout)
                 if tr_results and isinstance(tr_results, list):
                     
-                    hop_count = len(tr_results[0].get('result', []))
+                    hop_count = len(tr_results[0].get('result') or [])
             except Exception as tr_e:
                 logging.error(f"Error performing traceroute for probe {probe_id} in {country}: {tr_e}")
 
@@ -193,11 +258,11 @@ def run_threaded(job_func):
 
 
 def main():
-    
+    # The thread scheduling
     schedule.every(1).minutes.do(run_threaded, measure_latency)
     schedule.every(2).minutes.do(run_threaded, update_json)
 
-    
+    # Keep running in a loop.
     while True:
         schedule.run_pending()
         time.sleep(1)
