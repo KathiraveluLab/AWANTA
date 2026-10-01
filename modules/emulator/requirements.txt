@@ -20,7 +20,7 @@ oslo.i18n==6.3.0
 ovs==3.4.0
 packaging==24.1
 pbr==6.0.0
-Pygments==2.18.0
+Pygments==2.20.0
 PyYAML==6.0.2
 repoze.lru==0.7
 requests==2.33.0
@@ -41,7 +41,7 @@ sphinxcontrib-serializinghtml==2.0.0
 stevedore==5.2.0
 tinyrpc==1.1.7
 tomli==2.0.1
-urllib3==2.7.0
-WebOb==1.8.10
+urllib3==2.8.0
+WebOb==1.8.11
 wrapt==1.16.0
 zipp==3.20.0
