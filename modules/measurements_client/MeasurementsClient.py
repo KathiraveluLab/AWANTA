@@ -153,7 +153,7 @@ def measure_country(country):
         results = json.loads(ripe.stdout)
         for res in results:
             probe_id = str(res.get('prb_id'))
-            rtts = [r.get('rtt') for r in (res.get('result') or []) if r.get('rtt') is not None]
+            rtts = [r.get('rtt') for r in res.get('result', []) if r.get('rtt') is not None]
 
             avg_rtt = 0.0
             jitter = 0.0
@@ -176,7 +176,7 @@ def measure_country(country):
                 tr_results = json.loads(tr_ripe.stdout)
                 if tr_results and isinstance(tr_results, list):
                     
-                    hop_count = len(tr_results[0].get('result') or [])
+                    hop_count = len(tr_results[0].get('result', []))
             except Exception as tr_e:
                 logging.error(f"Error performing traceroute for probe {probe_id} in {country}: {tr_e}")
 
