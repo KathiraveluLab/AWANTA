@@ -26,11 +26,35 @@ class EventManager:
     to an ActiveMQ broker using the STOMP protocol.
     """
     def __init__(self, host='localhost', port=61613, destination='/queue/awanta.events'):
+        self._validate_connection_params(host, port, destination)
         self.host = host
         self.port = port
         self.destination = destination
         self.conn = None
         self.logger = logging.getLogger(__name__)
+
+    @staticmethod
+    def _validate_connection_params(host, port, destination):
+        """
+        Validates connection parameters up front, so a misconfigured host,
+        port, or destination fails immediately with a clear message instead
+        of surfacing later as an opaque error from deep inside the stomp
+        library.
+        """
+        errors = []
+
+        if not isinstance(host, str) or not host.strip():
+            errors.append("'host' must be a non-empty string")
+
+        if not isinstance(port, int) or isinstance(port, bool) or not (1 <= port <= 65535):
+            errors.append("'port' must be an integer between 1 and 65535")
+
+        if not isinstance(destination, str) or not destination.strip():
+            errors.append("'destination' must be a non-empty string")
+
+        if errors:
+            error_message = "Invalid EventManager connection parameters:\n  - " + "\n  - ".join(errors)
+            raise ValueError(error_message)
 
     def _connect(self):
         """Internal method to establish connection to the broker."""
