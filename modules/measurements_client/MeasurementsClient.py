@@ -13,8 +13,72 @@ data_lock = threading.Lock()
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
 
+REQUIRED_CONFIG_SCHEMA = {
+    "Target": (str, list),
+    "NoOfProbes": int,
+    "From": list,
+    "Measure": str,
+    "Me": str,
+    "Packets": int,
+    "Size": int,
+}
+
+
+def validate_config(config):
+    """
+    Validates config.json against the fields MeasurementsClient actually
+    needs. Collects every problem found instead of stopping at the first
+    one, so a contributor setting up config.json for the first time can
+    fix everything in a single pass rather than one confusing KeyError
+    at a time. 'Target' may be either a single string or a list of
+    targets, so both types are accepted.
+    """
+    errors = []
+
+    for key, expected_type in REQUIRED_CONFIG_SCHEMA.items():
+        if key not in config:
+            errors.append(f"Missing required key: '{key}'")
+            continue
+        if not isinstance(config[key], expected_type):
+            type_names = (
+                expected_type.__name__
+                if isinstance(expected_type, type)
+                else " or ".join(t.__name__ for t in expected_type)
+            )
+            errors.append(
+                f"'{key}' should be of type {type_names}, "
+                f"got {type(config[key]).__name__}"
+            )
+
+    if isinstance(config.get("Target"), str) and not config["Target"].strip():
+        errors.append("'Target' cannot be an empty string")
+    elif isinstance(config.get("Target"), list) and len(config["Target"]) == 0:
+        errors.append("'Target' cannot be an empty list")
+
+    if isinstance(config.get("From"), list):
+        if len(config["From"]) == 0:
+            errors.append("'From' cannot be an empty list")
+        elif not all(isinstance(c, str) and len(c) == 2 for c in config["From"]):
+            errors.append("'From' must be a list of 2-letter country codes (e.g. 'US', 'IN')")
+
+    if isinstance(config.get("NoOfProbes"), int) and config["NoOfProbes"] <= 0:
+        errors.append("'NoOfProbes' must be a positive integer")
+
+    if isinstance(config.get("Packets"), int) and config["Packets"] <= 0:
+        errors.append("'Packets' must be a positive integer")
+
+    if isinstance(config.get("Size"), int) and config["Size"] <= 0:
+        errors.append("'Size' must be a positive integer")
+
+    if errors:
+        error_message = "Invalid config.json:\n  - " + "\n  - ".join(errors)
+        raise ValueError(error_message)
+
+
 with open(CONFIG_PATH, 'r') as f:
     config = json.load(f)
+
+validate_config(config)
 
 #Get the constants for the RIPE Atlas Measurements from config.json.
 # Target may be given as a single string (backward compatible) or a list
@@ -162,7 +226,8 @@ def measure_latency():
 
         iteration += 1
         logging.info('Total run time: %s %s', (time.time() - t_start)/60, ' minutes!')
-        EXTRACTION_RUNNING = False
+        with data_lock:
+            EXTRACTION_RUNNING = False
 
         logging.info(whole_dict)
 
