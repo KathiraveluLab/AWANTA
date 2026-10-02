@@ -4,6 +4,7 @@ from .src.routing.two_hop_relaxing import TwoHopRelaxing
 from .src.routing.composite_metric_relaxing import CompositeMetricRelaxing
 from .src.routing.dijkstra_relaxing import DijkstraRelaxing
 from .src.routing.stable_relaxing import StableRelaxing
+from .src.routing.ecmp_relaxing import ECMPRelaxing
 
 class CloudRouter:
     """
@@ -16,6 +17,7 @@ class CloudRouter:
         'composite_metric_relaxing': CompositeMetricRelaxing,
         'dijkstra_relaxing': DijkstraRelaxing,
         'stable_relaxing': StableRelaxing,
+        'ecmp_relaxing': ECMPRelaxing,
     }
 
     def __init__(self, network_manager, datapaths, strategy='latency_relaxing'):
