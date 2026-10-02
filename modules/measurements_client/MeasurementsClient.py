@@ -11,9 +11,10 @@ from EventManager import EventManager
 
 data_lock = threading.Lock()
 
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
 
 REQUIRED_CONFIG_SCHEMA = {
-    "Target": str,
+    "Target": (str, list),
     "NoOfProbes": int,
     "From": list,
     "Measure": str,
@@ -29,7 +30,8 @@ def validate_config(config):
     needs. Collects every problem found instead of stopping at the first
     one, so a contributor setting up config.json for the first time can
     fix everything in a single pass rather than one confusing KeyError
-    at a time.
+    at a time. 'Target' may be either a single string or a list of
+    targets, so both types are accepted.
     """
     errors = []
 
@@ -37,18 +39,21 @@ def validate_config(config):
         if key not in config:
             errors.append(f"Missing required key: '{key}'")
             continue
-        val = config[key]
-        if not isinstance(val, expected_type) or (expected_type is int and isinstance(val, bool)):
+        if not isinstance(config[key], expected_type):
+            type_names = (
+                expected_type.__name__
+                if isinstance(expected_type, type)
+                else " or ".join(t.__name__ for t in expected_type)
+            )
             errors.append(
-                f"'{key}' should be of type {expected_type.__name__}, "
-                f"got {type(val).__name__}"
+                f"'{key}' should be of type {type_names}, "
+                f"got {type(config[key]).__name__}"
             )
 
-    # Value-level checks, only run if the type checks above already passed
-    # for that field (no point checking .strip() on something that isn't
-    # a string, for example).
     if isinstance(config.get("Target"), str) and not config["Target"].strip():
         errors.append("'Target' cannot be an empty string")
+    elif isinstance(config.get("Target"), list) and len(config["Target"]) == 0:
+        errors.append("'Target' cannot be an empty list")
 
     if isinstance(config.get("From"), list):
         if len(config["From"]) == 0:
@@ -56,16 +61,13 @@ def validate_config(config):
         elif not all(isinstance(c, str) and len(c) == 2 for c in config["From"]):
             errors.append("'From' must be a list of 2-letter country codes (e.g. 'US', 'IN')")
 
-    no_of_probes = config.get("NoOfProbes")
-    if isinstance(no_of_probes, int) and not isinstance(no_of_probes, bool) and no_of_probes <= 0:
+    if isinstance(config.get("NoOfProbes"), int) and config["NoOfProbes"] <= 0:
         errors.append("'NoOfProbes' must be a positive integer")
 
-    packets = config.get("Packets")
-    if isinstance(packets, int) and not isinstance(packets, bool) and packets <= 0:
+    if isinstance(config.get("Packets"), int) and config["Packets"] <= 0:
         errors.append("'Packets' must be a positive integer")
 
-    size = config.get("Size")
-    if isinstance(size, int) and not isinstance(size, bool) and size <= 0:
+    if isinstance(config.get("Size"), int) and config["Size"] <= 0:
         errors.append("'Size' must be a positive integer")
 
     if errors:
@@ -73,15 +75,17 @@ def validate_config(config):
         raise ValueError(error_message)
 
 
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
-
 with open(CONFIG_PATH, 'r') as f:
     config = json.load(f)
 
 validate_config(config)
 
 #Get the constants for the RIPE Atlas Measurements from config.json.
-target = config['Target']
+# Target may be given as a single string (backward compatible) or a list
+# of targets; it's always normalized to a list here so the rest of the
+# code can treat it uniformly.
+_raw_target = config['Target']
+targets = _raw_target if isinstance(_raw_target, list) else [_raw_target]
 no_of_probes = config['NoOfProbes']
 from_countries = config['From']
 measure = config['Measure']
@@ -89,7 +93,7 @@ packets = config['Packets']
 me = config['Me']
 size = config['Size']
 
-
+# Global Constants: Configurations and folder locations
 EXTRACTION_RUNNING = False
 TRIMMED_LOGS = False
 INIT_EXECUTION = True
@@ -102,18 +106,19 @@ iteration = 0
 if not os.path.exists('output'):
     os.makedirs('output')
 
-
+# Output in a preferred format.
 if TRIMMED_LOGS:
     logging.basicConfig(filename='output/awanta.out', level=logging.INFO, format='%(message)s')
 else:
 	logging.basicConfig(filename='output/awanta.out', level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-
+# Results are nested by target, then by country: [target: [country: [probe: metrics]]]
 whole_dict = dict()
-completed_countries = list()            
+# Tracks which countries have been measured so far, per target: [target: [country, ...]]
+completed_countries = dict()
 
 
-
+# All measured endpoints are saved between iterations as JSON files.
 try:
     with open(latency_file, 'r') as f:
         whole_dict = json.load(f)
@@ -130,15 +135,14 @@ except (FileNotFoundError, json.JSONDecodeError):
 event_manager = EventManager()
 
 
-def measure_country(country):
+def measure_target_country(target, country):
     """
-    Run a ping measurement (for RTT/jitter) and a traceroute measurement
+    Runs a ping measurement (for RTT/jitter) and a traceroute measurement
     (for hop count) against `target`, from probes in the given country.
     Returns a dict of {probe_id: {"rtt": ..., "jitter": ..., "hop_count": ...}}.
     """
-    logging.info('Measuring for country: ' + country)
+    logging.info(f'Measuring target {target} for country: {country}')
     each_dict = dict()
-    
     cmd = [
         "ripe-atlas", "measure", str(measure),
         "--target", str(target),
@@ -148,8 +152,9 @@ def measure_country(country):
         "--size", str(size),
         "--renderer", "json"
     ]
+    ripe = subprocess.run(cmd, capture_output=True, shell=False, encoding="utf8")
+
     try:
-        ripe = subprocess.run(cmd, capture_output=True, shell=False, encoding="utf8")
         results = json.loads(ripe.stdout)
         for res in results:
             probe_id = str(res.get('prb_id'))
@@ -159,11 +164,9 @@ def measure_country(country):
             jitter = 0.0
             if rtts:
                 avg_rtt = sum(rtts) / len(rtts)
-                
                 variance = sum((x - avg_rtt) ** 2 for x in rtts) / len(rtts)
                 jitter = variance ** 0.5
 
-            
             hop_count = 0
             try:
                 tr_cmd = [
@@ -175,14 +178,13 @@ def measure_country(country):
                 tr_ripe = subprocess.run(tr_cmd, capture_output=True, shell=False, encoding="utf8")
                 tr_results = json.loads(tr_ripe.stdout)
                 if tr_results and isinstance(tr_results, list):
-                    
                     hop_count = len(tr_results[0].get('result', []))
             except Exception as tr_e:
-                logging.error(f"Error performing traceroute for probe {probe_id} in {country}: {tr_e}")
+                logging.error(f"Error performing traceroute for probe {probe_id}, target {target}, country {country}: {tr_e}")
 
             each_dict[probe_id] = {"rtt": avg_rtt, "jitter": jitter, "hop_count": hop_count}
     except Exception as e:
-        logging.error(f"Error parsing RIPE Atlas output for {country}: {e}")
+        logging.error(f"Error parsing RIPE Atlas output for target {target}, country {country}: {e}")
 
     return each_dict
 
@@ -201,45 +203,33 @@ def measure_latency():
         EXTRACTION_RUNNING = True
 
         if INIT_EXECUTION:
-            
-            for country in from_countries:
-                each_dict = measure_country(country)
+            for target in targets:
+                whole_dict.setdefault(target, {})
+                completed_countries.setdefault(target, [])
 
-                with data_lock:
-                    whole_dict[country] = each_dict
-                    completed_countries.append(country)
-                
-                event_manager.publish_measurement({"country": country, "data": each_dict})
+                for country in from_countries:
+                    each_dict = measure_target_country(target, country)
 
-            
+                    with data_lock:
+                        whole_dict[target][country] = each_dict
+                        completed_countries[target].append(country)
+                    event_manager.publish_measurement({"target": target, "country": country, "data": each_dict})
+
             with open(current_measurement_file, 'w') as f:
                 json.dump(whole_dict, f)
 
             INIT_EXECUTION = False
 
         else:
-            
-            for country in list(completed_countries):
-                each_dict = measure_country(country)
-
-                with data_lock:
-                    whole_dict[country] = each_dict
-                
-                event_manager.publish_measurement({"country": country, "data": each_dict})
-
-            
-            with open(current_measurement_file, 'w') as f:
-                json.dump(whole_dict, f)
+            # Update the whole_dict incrementally. But not a complete rerun.
+            logging.info("Todo: Subsequent Execution is not implemented yet...")
 
         iteration += 1
-        
         logging.info('Total run time: %s %s', (time.time() - t_start)/60, ' minutes!')
         with data_lock:
             EXTRACTION_RUNNING = False
 
-        
         logging.info(whole_dict)
-
 
 
 def update_json():
@@ -252,17 +242,16 @@ def update_json():
             json.dump(completed_countries, f)
     logging.info('Progress is recorded to the JSON file')
 
+
 def run_threaded(job_func):
     job_thread = threading.Thread(target=job_func)
     job_thread.start()
 
 
 def main():
-    # The thread scheduling
     schedule.every(1).minutes.do(run_threaded, measure_latency)
     schedule.every(2).minutes.do(run_threaded, update_json)
 
-    # Keep running in a loop.
     while True:
         schedule.run_pending()
         time.sleep(1)
