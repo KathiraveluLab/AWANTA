@@ -54,7 +54,7 @@ sphinxcontrib-serializinghtml==2.0.0
 stevedore==5.2.0
 tinyrpc==1.1.7
 tomli==2.4.1
-typing_extensions==4.12.2
+typing_extensions==4.16.0
 tzdata==2025.1
 tzlocal==5.3
 stomp.py==8.1.2
