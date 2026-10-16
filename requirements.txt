@@ -60,6 +60,6 @@ tzlocal==5.3
 stomp.py==8.1.2
 urllib3==2.8.0
 WebOb==1.8.11
-websocket-client==1.9.0
+websocket-client==1.9.2
 wrapt==2.2.2
 zipp==4.1.0
